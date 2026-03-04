@@ -12,11 +12,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>
 }): Promise<Metadata> {
-  const { id } = await params
-  const supabase = await createClient()
-  const { data } = await supabase.from('directors').select('name').eq('id', id).single()
-  return {
-    title: data ? `${data.name} 장례지도사 | 휴앤올` : '장례지도사 | 휴앤올',
+  try {
+    const { id } = await params
+    const supabase = await createClient()
+    const { data } = await supabase.from('directors').select('name').eq('id', id).single()
+    return { title: data ? `${data.name} 장례지도사 | 휴앤올` : '장례지도사 | 휴앤올' }
+  } catch {
+    return { title: '장례지도사 | 휴앤올' }
   }
 }
 
@@ -39,24 +41,36 @@ export default async function DirectorDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const supabase = await createClient()
 
-  const { data: director } = await supabase
-    .from('directors')
-    .select('*')
-    .eq('id', id)
-    .eq('is_active', true)
-    .single()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let director: any = null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let reviews: any[] | null = null
+  try {
+    const supabase = await createClient()
+    const { data: directorData } = await supabase
+      .from('directors')
+      .select('*')
+      .eq('id', id)
+      .eq('is_active', true)
+      .single()
+    director = directorData
+
+    if (director) {
+      const { data: reviewData } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('director_id', id)
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false })
+        .limit(6)
+      reviews = reviewData
+    }
+  } catch {
+    // Supabase 미설정 시 notFound 처리
+  }
 
   if (!director) notFound()
-
-  const { data: reviews } = await supabase
-    .from('reviews')
-    .select('*')
-    .eq('director_id', id)
-    .eq('status', 'approved')
-    .order('created_at', { ascending: false })
-    .limit(6)
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
@@ -144,7 +158,7 @@ export default async function DirectorDetailPage({
           <div className="mt-6 border-t border-[#E5E7EB] pt-6">
             <h2 className="text-lg font-bold text-[#1A1A1A] mb-3">전문 분야</h2>
             <div className="flex flex-wrap gap-2">
-              {director.specialties.map((s) => (
+              {director.specialties.map((s: string) => (
                 <span
                   key={s}
                   className="rounded-full bg-[#F0F9F7] px-3 py-1.5 text-sm text-[#2D7B6F] font-medium"

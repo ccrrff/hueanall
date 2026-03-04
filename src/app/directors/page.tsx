@@ -10,12 +10,19 @@ export const metadata: Metadata = {
 }
 
 export default async function DirectorsPage() {
-  const supabase = await createClient()
-  const { data: directors } = await supabase
-    .from('directors')
-    .select('*')
-    .eq('is_active', true)
-    .order('sort_order', { ascending: true })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let directors: any[] | null = null
+  try {
+    const supabase = await createClient()
+    const { data } = await supabase
+      .from('directors')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+    directors = data
+  } catch {
+    // Supabase 미설정 시 빈 상태 표시
+  }
 
   return (
     <>

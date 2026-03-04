@@ -10,12 +10,19 @@ export const metadata: Metadata = {
 }
 
 export default async function ReviewsPage() {
-  const supabase = await createClient()
-  const { data: reviews } = await supabase
-    .from('reviews')
-    .select('*, directors(name)')
-    .eq('status', 'approved')
-    .order('created_at', { ascending: false })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let reviews: any[] | null = null
+  try {
+    const supabase = await createClient()
+    const { data } = await supabase
+      .from('reviews')
+      .select('*, directors(name)')
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false })
+    reviews = data
+  } catch {
+    // Supabase 미설정 시 빈 상태 표시
+  }
 
   const hasReviews = reviews && reviews.length > 0
 
@@ -46,7 +53,7 @@ export default async function ReviewsPage() {
       <section className="max-w-6xl mx-auto px-4 py-16">
         {hasReviews ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {reviews.map((review) => (
+            {(reviews ?? []).map((review) => (
               <ReviewCard key={review.id} review={review} />
             ))}
           </div>
