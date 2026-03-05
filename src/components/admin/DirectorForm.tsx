@@ -4,8 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
-import { createDirector, updateDirector } from '@/app/admin/directors/actions'
+import { createDirector, updateDirector, uploadDirectorPhoto } from '@/app/admin/directors/actions'
 import { Button } from '@/components/ui/button'
 import type { Director } from '@/types/database'
 
@@ -56,13 +55,9 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
       let photo_url = director?.photo_url ?? null
 
       if (photoFile) {
-        const supabase = createClient()
-        const path = `${Date.now()}_${Math.random().toString(36).slice(2)}_${photoFile.name.replace(/\s/g, '_')}`
-        const { error: uploadError } = await supabase.storage
-          .from('director-photos')
-          .upload(path, photoFile, { contentType: photoFile.type })
-        if (uploadError) throw new Error(`사진 업로드 실패: ${uploadError.message}`)
-        photo_url = supabase.storage.from('director-photos').getPublicUrl(path).data.publicUrl
+        const fd = new FormData()
+        fd.append('photo', photoFile)
+        photo_url = await uploadDirectorPhoto(fd)
       }
 
       const data = {

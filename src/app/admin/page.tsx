@@ -12,8 +12,8 @@ export default async function AdminDashboardPage() {
 
   if (isSupabaseConfigured()) {
     try {
-      const { createClient } = await import('@/lib/supabase/server')
-      const supabase = await createClient()
+      const { createAdminClient } = await import('@/lib/supabase/admin')
+      const supabase = createAdminClient()
       const [
         { count: dc },
         { count: pc },

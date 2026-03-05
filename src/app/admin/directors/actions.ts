@@ -63,3 +63,18 @@ export async function deleteDirector(id: string) {
   revalidatePath('/admin/directors')
   revalidatePath('/directors')
 }
+
+export async function uploadDirectorPhoto(formData: FormData): Promise<string> {
+  await verifyAdmin()
+  if (!isSupabaseConfigured()) throw new Error('Supabase가 설정되지 않았습니다')
+  const { createAdminClient } = await import('@/lib/supabase/admin')
+  const supabase = createAdminClient()
+  const file = formData.get('photo') as File
+  if (!file || file.size === 0) throw new Error('파일이 없습니다')
+  const path = `${Date.now()}_${Math.random().toString(36).slice(2)}_${file.name.replace(/\s/g, '_')}`
+  const { error: uploadError } = await supabase.storage
+    .from('director-photos')
+    .upload(path, file, { contentType: file.type })
+  if (uploadError) throw new Error(`사진 업로드 실패: ${uploadError.message}`)
+  return supabase.storage.from('director-photos').getPublicUrl(path).data.publicUrl
+}

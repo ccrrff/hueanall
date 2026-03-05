@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
 import ConsultationStatusButton from '@/components/admin/ConsultationStatusButton'
 import Link from 'next/link'
 
@@ -23,7 +24,10 @@ export default async function AdminConsultationsPage({
   searchParams: Promise<{ status?: string }>
 }) {
   const { status } = await searchParams
-  const supabase = await createClient()
+  if (!isSupabaseConfigured()) {
+    return <div className="p-6 text-[#666666]">Supabase 연결이 필요합니다.</div>
+  }
+  const supabase = createAdminClient()
 
   let query = supabase
     .from('consultations')

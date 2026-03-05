@@ -1,10 +1,12 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
 import { notFound } from 'next/navigation'
 import DirectorForm from '@/components/admin/DirectorForm'
 
 export default async function AdminDirectorEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = await createClient()
+  if (!isSupabaseConfigured()) notFound()
+  const supabase = createAdminClient()
   const { data: director } = await supabase.from('directors').select('*').eq('id', id).single()
   if (!director) notFound()
 

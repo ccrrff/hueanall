@@ -1,18 +1,18 @@
 import Link from 'next/link'
-import { deleteDirector } from './actions'
-import { PlusCircle, Pencil, Trash2 } from 'lucide-react'
+import { PlusCircle, Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 import { FALLBACK_DIRECTORS } from '@/lib/fallback-data'
 import type { Director } from '@/types/database'
+import DeleteDirectorButton from '@/components/admin/DeleteDirectorButton'
 
 export default async function AdminDirectorsPage() {
   let directors: Director[] = []
 
   if (isSupabaseConfigured()) {
     try {
-      const { createClient } = await import('@/lib/supabase/server')
-      const supabase = await createClient()
+      const { createAdminClient } = await import('@/lib/supabase/admin')
+      const supabase = createAdminClient()
       const { data } = await supabase
         .from('directors')
         .select('*')
@@ -67,12 +67,7 @@ export default async function AdminDirectorsPage() {
                       <Pencil className="w-3 h-3" /> 수정
                     </Link>
                     {isSupabaseConfigured() && (
-                      <form action={deleteDirector.bind(null, d.id)}>
-                        <button type="submit" className="flex items-center gap-1 text-xs text-red-500 hover:underline"
-                          onClick={e => { if (!confirm('삭제하시겠습니까?')) e.preventDefault() }}>
-                          <Trash2 className="w-3 h-3" /> 삭제
-                        </button>
-                      </form>
+                      <DeleteDirectorButton id={d.id} />
                     )}
                   </div>
                 </td>
