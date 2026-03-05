@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createDirector, updateDirector, uploadDirectorPhoto } from '@/app/admin/directors/actions'
+import { Camera, X, Loader2 } from 'lucide-react'
+import { createDirector, updateDirector, uploadDirectorPhoto, deleteDirectorPhoto } from '@/app/admin/directors/actions'
 import { Button } from '@/components/ui/button'
 import type { Director } from '@/types/database'
 
@@ -19,13 +20,23 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
   const [error, setError] = useState<string | null>(null)
   const [photoFile, setPhotoFile] = useState<File | null>(null)
   const [photoPreview, setPhotoPreview] = useState<string | null>(director?.photo_url ?? null)
+  const [photoRemoved, setPhotoRemoved] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null
     setPhotoFile(file)
+    setPhotoRemoved(false)
     if (file) {
       setPhotoPreview(URL.createObjectURL(file))
     }
+  }
+
+  function handlePhotoRemove() {
+    setPhotoFile(null)
+    setPhotoPreview(null)
+    setPhotoRemoved(true)
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -58,6 +69,11 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
         const fd = new FormData()
         fd.append('photo', photoFile)
         photo_url = await uploadDirectorPhoto(fd)
+      } else if (photoRemoved) {
+        if (mode === 'edit' && director?.photo_url) {
+          await deleteDirectorPhoto(director.photo_url)
+        }
+        photo_url = null
       }
 
       const data = {
@@ -87,176 +103,221 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
     }
   }
 
+  const inputClass = 'w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent'
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
-          {error}
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-[#333333] mb-1">
-            이름 <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            defaultValue={director?.name ?? ''}
-            required
-            className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent"
-          />
-        </div>
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-[#333333] mb-1">
-            직함
-          </label>
-          <input
-            id="title"
-            name="title"
-            type="text"
-            defaultValue={director?.title ?? '장례지도사'}
-            className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="position" className="block text-sm font-medium text-[#333333] mb-1">
-            직급
-          </label>
-          <input
-            id="position"
-            name="position"
-            type="text"
-            defaultValue={director?.position ?? ''}
-            className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent"
-          />
-        </div>
-        <div>
-          <label htmlFor="years_experience" className="block text-sm font-medium text-[#333333] mb-1">
-            경력(년) <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="years_experience"
-            name="years_experience"
-            type="number"
-            min={0}
-            defaultValue={director?.years_experience ?? 0}
-            required
-            className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="introduction" className="block text-sm font-medium text-[#333333] mb-1">
-          소개 <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          id="introduction"
-          name="introduction"
-          rows={5}
-          defaultValue={director?.introduction ?? ''}
-          required
-          className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent resize-y"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="specialties" className="block text-sm font-medium text-[#333333] mb-1">
-          전문 분야
-        </label>
-        <input
-          id="specialties"
-          name="specialties"
-          type="text"
-          defaultValue={director?.specialties?.join(', ') ?? ''}
-          placeholder="예: 장례지도, 유족상담, 행정지원"
-          className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent"
-        />
-        <p className="text-xs text-[#999999] mt-1">쉼표로 구분</p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-[#333333] mb-1">
-            연락처
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="text"
-            defaultValue={director?.phone ?? ''}
-            placeholder="010-0000-0000"
-            className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent"
-          />
-        </div>
-        <div>
-          <label htmlFor="sort_order" className="block text-sm font-medium text-[#333333] mb-1">
-            정렬 순서
-          </label>
-          <input
-            id="sort_order"
-            name="sort_order"
-            type="number"
-            defaultValue={director?.sort_order ?? 0}
-            className="w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-[#333333] mb-1">프로필 사진</label>
-        {photoPreview && (
-          <div className="mb-2">
-            <Image
-              src={photoPreview}
-              alt="프로필 미리보기"
-              width={96}
-              height={96}
-              className="rounded-lg object-cover"
-              unoptimized={photoPreview.startsWith('blob:')}
-            />
+    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-8">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 flex items-start gap-2">
+            <span className="shrink-0 mt-0.5">⚠</span>
+            <span>{error}</span>
           </div>
         )}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handlePhotoChange}
-          className="block w-full text-sm text-[#666666] file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#F0F0F0] file:text-[#333333] hover:file:bg-[#E5E5E5]"
-        />
-      </div>
 
-      <div className="flex items-center gap-2">
-        <input
-          id="is_active"
-          name="is_active"
-          type="checkbox"
-          defaultChecked={director?.is_active ?? true}
-          className="rounded border-[#D1D5DB] text-[#2D7B6F] focus:ring-[#2D7B6F]"
-        />
-        <label htmlFor="is_active" className="text-sm text-[#333333]">활성 상태</label>
-      </div>
+        {/* 프로필 사진 */}
+        <div>
+          <label className="block text-sm font-medium text-[#333333] mb-3">프로필 사진</label>
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              {photoPreview ? (
+                <div className="relative w-24 h-24">
+                  <Image
+                    src={photoPreview}
+                    alt="프로필 미리보기"
+                    width={96}
+                    height={96}
+                    className="w-24 h-24 rounded-full object-cover border-2 border-[#E5E7EB]"
+                    unoptimized={photoPreview.startsWith('blob:')}
+                  />
+                  <button
+                    type="button"
+                    onClick={handlePhotoRemove}
+                    className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                    aria-label="사진 삭제"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="w-24 h-24 rounded-full bg-[#F3F4F6] border-2 border-dashed border-[#D1D5DB] flex items-center justify-center">
+                  <Camera className="w-8 h-8 text-[#9CA3AF]" />
+                </div>
+              )}
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="text-sm font-medium text-[#2D7B6F] hover:text-[#1E5C52] hover:underline"
+              >
+                {photoPreview ? '사진 변경' : '사진 선택'}
+              </button>
+              <p className="text-xs text-[#9CA3AF] mt-1">JPG, PNG (최대 2MB)</p>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoChange}
+                className="hidden"
+              />
+            </div>
+          </div>
+        </div>
 
-      <div className="flex items-center gap-3 pt-2">
-        <Button
-          type="submit"
-          disabled={loading}
-          className="bg-[#2D7B6F] hover:bg-[#1E5C52] text-white rounded-full px-6"
-        >
-          {loading ? '처리 중...' : mode === 'new' ? '등록하기' : '수정하기'}
-        </Button>
-        <Link
-          href="/admin/directors"
-          className="text-sm text-[#666666] hover:text-[#333333] hover:underline"
-        >
-          취소
-        </Link>
-      </div>
-    </form>
+        {/* 이름 / 직함 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-[#333333] mb-1">
+              이름 <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              defaultValue={director?.name ?? ''}
+              required
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-[#333333] mb-1">
+              직함
+            </label>
+            <input
+              id="title"
+              name="title"
+              type="text"
+              defaultValue={director?.title ?? '장례지도사'}
+              className={inputClass}
+            />
+          </div>
+        </div>
+
+        {/* 직급 / 경력 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="position" className="block text-sm font-medium text-[#333333] mb-1">
+              직급
+            </label>
+            <input
+              id="position"
+              name="position"
+              type="text"
+              defaultValue={director?.position ?? ''}
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="years_experience" className="block text-sm font-medium text-[#333333] mb-1">
+              경력(년) <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="years_experience"
+              name="years_experience"
+              type="number"
+              min={0}
+              defaultValue={director?.years_experience ?? 0}
+              required
+              className={inputClass}
+            />
+          </div>
+        </div>
+
+        {/* 소개 */}
+        <div>
+          <label htmlFor="introduction" className="block text-sm font-medium text-[#333333] mb-1">
+            소개 <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            id="introduction"
+            name="introduction"
+            rows={5}
+            defaultValue={director?.introduction ?? ''}
+            required
+            className={`${inputClass} resize-y`}
+          />
+        </div>
+
+        {/* 전문 분야 */}
+        <div>
+          <label htmlFor="specialties" className="block text-sm font-medium text-[#333333] mb-1">
+            전문 분야
+          </label>
+          <input
+            id="specialties"
+            name="specialties"
+            type="text"
+            defaultValue={director?.specialties?.join(', ') ?? ''}
+            placeholder="장례지도, 유족상담, 행정지원 (쉼표로 구분)"
+            className={inputClass}
+          />
+          <p className="text-xs text-[#9CA3AF] mt-1">여러 항목을 쉼표(,)로 구분해 입력하세요</p>
+        </div>
+
+        {/* 연락처 / 정렬 순서 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium text-[#333333] mb-1">
+              연락처
+            </label>
+            <input
+              id="phone"
+              name="phone"
+              type="text"
+              defaultValue={director?.phone ?? ''}
+              placeholder="010-0000-0000"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="sort_order" className="block text-sm font-medium text-[#333333] mb-1">
+              정렬 순서
+            </label>
+            <input
+              id="sort_order"
+              name="sort_order"
+              type="number"
+              defaultValue={director?.sort_order ?? 0}
+              className={inputClass}
+            />
+          </div>
+        </div>
+
+        {/* 활성 상태 */}
+        <div className="flex items-center gap-2">
+          <input
+            id="is_active"
+            name="is_active"
+            type="checkbox"
+            defaultChecked={director?.is_active ?? true}
+            className="rounded border-[#D1D5DB] text-[#2D7B6F] focus:ring-[#2D7B6F]"
+          />
+          <label htmlFor="is_active" className="text-sm text-[#333333]">활성 상태</label>
+        </div>
+
+        {/* 버튼 */}
+        <div className="flex items-center gap-3 pt-2 border-t border-[#F0F0F0]">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="bg-[#2D7B6F] hover:bg-[#1E5C52] text-white rounded-full px-6 min-w-[120px]"
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                저장 중...
+              </span>
+            ) : mode === 'new' ? '등록하기' : '수정하기'}
+          </Button>
+          <Link
+            href="/admin/directors"
+            className="text-sm text-[#666666] hover:text-[#333333] hover:underline"
+          >
+            취소
+          </Link>
+        </div>
+      </form>
+    </div>
   )
 }
