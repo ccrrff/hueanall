@@ -1,26 +1,51 @@
-import { createClient } from '@/lib/supabase/server'
 import { Users, MessageSquare, Star, Clock } from 'lucide-react'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
+import { FALLBACK_DIRECTORS } from '@/lib/fallback-data'
+import { getLocalReviewCounts } from '@/lib/local-store'
 
 export default async function AdminDashboardPage() {
-  const supabase = await createClient()
+  let directorsCount = 0
+  let pendingConsultations = 0
+  let pendingReviews = 0
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let recentConsultations: any[] = []
 
-  // Stats queries in parallel
-  const [
-    { count: directorsCount },
-    { count: pendingConsultations },
-    { count: pendingReviews },
-    { data: recentConsultations },
-  ] = await Promise.all([
-    supabase.from('directors').select('*', { count: 'exact', head: true }).eq('is_active', true),
-    supabase.from('consultations').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-    supabase.from('reviews').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-    supabase.from('consultations').select('*, directors(name)').order('created_at', { ascending: false }).limit(10),
-  ])
+  if (isSupabaseConfigured()) {
+    try {
+      const { createClient } = await import('@/lib/supabase/server')
+      const supabase = await createClient()
+      const [
+        { count: dc },
+        { count: pc },
+        { count: pr },
+        { data: rc },
+      ] = await Promise.all([
+        supabase.from('directors').select('*', { count: 'exact', head: true }).eq('is_active', true),
+        supabase.from('consultations').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('reviews').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
+        supabase.from('consultations').select('*, directors(name)').order('created_at', { ascending: false }).limit(10),
+      ])
+      directorsCount = dc ?? 0
+      pendingConsultations = pc ?? 0
+      pendingReviews = pr ?? 0
+      recentConsultations = rc ?? []
+    } catch {
+      // Fall through to fallback
+    }
+  }
+
+  if (!isSupabaseConfigured()) {
+    const counts = getLocalReviewCounts()
+    directorsCount = FALLBACK_DIRECTORS.filter(d => d.is_active).length
+    pendingConsultations = 0
+    pendingReviews = counts.pending
+    recentConsultations = []
+  }
 
   const stats = [
-    { label: '활동 중인 지도사', value: directorsCount ?? 0, icon: Users, color: 'bg-[#2D7B6F]' },
-    { label: '대기 중인 상담', value: pendingConsultations ?? 0, icon: MessageSquare, color: 'bg-orange-500' },
-    { label: '승인 대기 후기', value: pendingReviews ?? 0, icon: Star, color: 'bg-purple-500' },
+    { label: '활동 중인 지도사', value: directorsCount, icon: Users, color: 'bg-[#2D7B6F]' },
+    { label: '대기 중인 상담', value: pendingConsultations, icon: MessageSquare, color: 'bg-orange-500' },
+    { label: '승인 대기 후기', value: pendingReviews, icon: Star, color: 'bg-purple-500' },
   ]
 
   return (
@@ -64,25 +89,25 @@ export default async function AdminDashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {recentConsultations?.map(c => (
+              {recentConsultations.map((c: {
+                id: string; customer_name: string; customer_phone: string;
+                consultation_type: string; directors: { name?: string } | null;
+                status: string; created_at: string;
+              }) => (
                 <tr key={c.id} className="border-b border-[#F0F0F0] hover:bg-[#F8F9FA]">
                   <td className="px-4 py-3 font-medium">{c.customer_name}</td>
                   <td className="px-4 py-3 text-[#666666]">{c.customer_phone}</td>
                   <td className="px-4 py-3">
                     <span className="text-xs bg-[#F0F9F7] text-[#2D7B6F] px-2 py-0.5 rounded-full font-medium">{c.consultation_type}</span>
                   </td>
-                  <td className="px-4 py-3 text-[#666666]">
-                    {(c.directors as { name?: string } | null)?.name ?? '-'}
-                  </td>
-                  <td className="px-4 py-3">
-                    <StatusBadge status={c.status} />
-                  </td>
+                  <td className="px-4 py-3 text-[#666666]">{c.directors?.name ?? '-'}</td>
+                  <td className="px-4 py-3"><StatusBadge status={c.status} /></td>
                   <td className="px-4 py-3 text-[#999999] text-xs">
                     {new Date(c.created_at).toLocaleString('ko-KR', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}
                   </td>
                 </tr>
               ))}
-              {!recentConsultations?.length && (
+              {!recentConsultations.length && (
                 <tr><td colSpan={6} className="px-4 py-8 text-center text-[#999999]">상담 신청이 없습니다</td></tr>
               )}
             </tbody>

@@ -1,22 +1,36 @@
-import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { deleteDirector } from './actions'
 import { PlusCircle, Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
+import { FALLBACK_DIRECTORS } from '@/lib/fallback-data'
+import type { Director } from '@/types/database'
 
 export default async function AdminDirectorsPage() {
-  const supabase = await createClient()
-  const { data: directors } = await supabase
-    .from('directors')
-    .select('*')
-    .order('sort_order', { ascending: true })
+  let directors: Director[] = []
+
+  if (isSupabaseConfigured()) {
+    try {
+      const { createClient } = await import('@/lib/supabase/server')
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('directors')
+        .select('*')
+        .order('sort_order', { ascending: true })
+      directors = data ?? []
+    } catch {
+      directors = FALLBACK_DIRECTORS
+    }
+  } else {
+    directors = FALLBACK_DIRECTORS
+  }
 
   return (
     <div className="p-6 max-w-6xl">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-black text-[#1A1A1A]">장례지도사 관리</h1>
-          <p className="text-sm text-[#666666] mt-1">총 {directors?.length ?? 0}명</p>
+          <p className="text-sm text-[#666666] mt-1">총 {directors.length}명</p>
         </div>
         <Button asChild className="bg-[#2D7B6F] hover:bg-[#1E5C52] text-white rounded-full gap-2">
           <Link href="/admin/directors/new"><PlusCircle className="w-4 h-4" /> 새 지도사 등록</Link>
@@ -35,7 +49,7 @@ export default async function AdminDirectorsPage() {
             </tr>
           </thead>
           <tbody>
-            {directors?.map(d => (
+            {directors.map(d => (
               <tr key={d.id} className="border-b border-[#F0F0F0] hover:bg-[#F8F9FA]">
                 <td className="px-4 py-3 text-[#999999]">{d.sort_order}</td>
                 <td className="px-4 py-3 font-medium">{d.name}</td>
@@ -52,22 +66,29 @@ export default async function AdminDirectorsPage() {
                       className="flex items-center gap-1 text-xs text-[#2D7B6F] hover:underline">
                       <Pencil className="w-3 h-3" /> 수정
                     </Link>
-                    <form action={deleteDirector.bind(null, d.id)}>
-                      <button type="submit" className="flex items-center gap-1 text-xs text-red-500 hover:underline"
-                        onClick={e => { if (!confirm('삭제하시겠습니까?')) e.preventDefault() }}>
-                        <Trash2 className="w-3 h-3" /> 삭제
-                      </button>
-                    </form>
+                    {isSupabaseConfigured() && (
+                      <form action={deleteDirector.bind(null, d.id)}>
+                        <button type="submit" className="flex items-center gap-1 text-xs text-red-500 hover:underline"
+                          onClick={e => { if (!confirm('삭제하시겠습니까?')) e.preventDefault() }}>
+                          <Trash2 className="w-3 h-3" /> 삭제
+                        </button>
+                      </form>
+                    )}
                   </div>
                 </td>
               </tr>
             ))}
-            {!directors?.length && (
+            {!directors.length && (
               <tr><td colSpan={6} className="px-4 py-8 text-center text-[#999999]">등록된 지도사가 없습니다</td></tr>
             )}
           </tbody>
         </table>
       </div>
+      {!isSupabaseConfigured() && (
+        <p className="text-xs text-[#999999] mt-4 text-center">
+          * Supabase 연결 후 장례지도사 추가/수정/삭제가 가능합니다
+        </p>
+      )}
     </div>
   )
 }

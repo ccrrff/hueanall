@@ -19,8 +19,15 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
   const router = useRouter()
 
   const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
+    // Local session logout
+    await fetch('/api/admin/logout', { method: 'POST' })
+    // Supabase session logout (if configured)
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+    } catch {
+      // Supabase not configured - ignore
+    }
     router.push('/admin/login')
     router.refresh()
   }

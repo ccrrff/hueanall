@@ -1,12 +1,22 @@
 'use server'
 import { revalidatePath } from 'next/cache'
-import { createAdminClient } from '@/lib/supabase/admin'
-import { createClient } from '@/lib/supabase/server'
+import { getAdminSession } from '@/lib/auth'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
 
 async function verifyAdmin() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  // 1. Local cookie auth
+  const session = await getAdminSession()
+  if (session.authenticated) return
+
+  // 2. Supabase auth fallback
+  if (isSupabaseConfigured()) {
+    const { createClient } = await import('@/lib/supabase/server')
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) return
+  }
+
+  throw new Error('Unauthorized')
 }
 
 export async function updateConsultationStatus(
@@ -15,6 +25,8 @@ export async function updateConsultationStatus(
   adminNote?: string
 ) {
   await verifyAdmin()
+  if (!isSupabaseConfigured()) return // No-op when Supabase not configured
+  const { createAdminClient } = await import('@/lib/supabase/admin')
   const supabase = createAdminClient()
   const updateData: { status: typeof status; admin_note?: string } = { status }
   if (adminNote !== undefined) updateData.admin_note = adminNote

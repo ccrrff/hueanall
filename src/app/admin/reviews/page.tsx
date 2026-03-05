@@ -1,8 +1,10 @@
-import { createClient } from '@/lib/supabase/server'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Star } from 'lucide-react'
 import ReviewActionButtons from '@/components/admin/ReviewActionButtons'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
+import { FALLBACK_REVIEWS } from '@/lib/fallback-data'
+import { getLocalReviews } from '@/lib/local-store'
 
 const STATUS_TABS = [
   { value: '', label: '전체' },
@@ -17,22 +19,39 @@ export default async function AdminReviewsPage({
   searchParams: Promise<{ status?: string }>
 }) {
   const { status } = await searchParams
-  const supabase = await createClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let reviews: any[] = []
 
-  let query = supabase
-    .from('reviews')
-    .select('*, directors(name)')
-    .order('created_at', { ascending: false })
+  if (isSupabaseConfigured()) {
+    try {
+      const { createClient } = await import('@/lib/supabase/server')
+      const supabase = await createClient()
+      let query = supabase
+        .from('reviews')
+        .select('*, directors(name)')
+        .order('created_at', { ascending: false })
+      if (status) query = query.eq('status', status as 'pending' | 'approved' | 'rejected')
+      const { data } = await query
+      reviews = data ?? []
+    } catch {
+      // Fall through to fallback
+    }
+  }
 
-  if (status) query = query.eq('status', status as 'pending' | 'approved' | 'rejected')
-
-  const { data: reviews } = await query
+  if (!isSupabaseConfigured()) {
+    const localReviews = getLocalReviews(status || undefined)
+    // Show fallback approved reviews + all local reviews
+    const fallback = status
+      ? FALLBACK_REVIEWS.filter(r => r.status === status)
+      : FALLBACK_REVIEWS
+    reviews = [...fallback, ...localReviews]
+  }
 
   return (
     <div className="p-6 max-w-7xl">
       <div className="mb-6">
         <h1 className="text-2xl font-black text-[#1A1A1A]">후기 관리</h1>
-        <p className="text-sm text-[#666666] mt-1">총 {reviews?.length ?? 0}건</p>
+        <p className="text-sm text-[#666666] mt-1">총 {reviews.length}건</p>
       </div>
 
       {/* Filter Tabs */}
@@ -53,7 +72,7 @@ export default async function AdminReviewsPage({
 
       {/* Reviews Grid */}
       <div className="space-y-3">
-        {reviews?.map(review => {
+        {reviews.map(review => {
           const images = Array.isArray(review.image_urls) ? (review.image_urls as string[]) : []
           return (
             <div key={review.id} className="bg-white rounded-2xl border border-[#E5E7EB] p-5">
@@ -61,7 +80,6 @@ export default async function AdminReviewsPage({
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    {/* Star rating */}
                     <div className="flex gap-0.5">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star key={i} className={`w-3.5 h-3.5 ${i < review.rating ? 'fill-[#FEE500] text-[#FEE500]' : 'text-[#E5E7EB]'}`} />
@@ -78,10 +96,9 @@ export default async function AdminReviewsPage({
                       <span className="text-[#2D7B6F]">· {(review.directors as { name?: string }).name} 지도사</span>
                     )}
                   </div>
-                  {/* Images */}
                   {images.length > 0 && (
                     <div className="flex gap-2 mt-3">
-                      {images.slice(0, 4).map((url, i) => (
+                      {images.slice(0, 4).map((url: string, i: number) => (
                         <div key={i} className="w-16 h-16 relative rounded-lg overflow-hidden border border-[#E5E7EB] flex-shrink-0">
                           <Image src={url} alt={`후기 이미지 ${i+1}`} fill className="object-cover" />
                         </div>
@@ -102,7 +119,7 @@ export default async function AdminReviewsPage({
             </div>
           )
         })}
-        {!reviews?.length && (
+        {!reviews.length && (
           <div className="bg-white rounded-2xl border border-[#E5E7EB] py-12 text-center text-[#999999]">
             후기가 없습니다
           </div>

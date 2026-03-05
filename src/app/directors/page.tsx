@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
 import DirectorCard from '@/components/directors/DirectorCard'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
+import { FALLBACK_DIRECTORS } from '@/lib/fallback-data'
 
 export const metadata: Metadata = {
   title: '장례지도사 소개 | 휴앤올',
@@ -12,16 +13,24 @@ export const metadata: Metadata = {
 export default async function DirectorsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let directors: any[] | null = null
-  try {
-    const supabase = await createClient()
-    const { data } = await supabase
-      .from('directors')
-      .select('*')
-      .eq('is_active', true)
-      .order('sort_order', { ascending: true })
-    directors = data
-  } catch {
-    // Supabase 미설정 시 빈 상태 표시
+
+  if (isSupabaseConfigured()) {
+    try {
+      const { createClient } = await import('@/lib/supabase/server')
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('directors')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true })
+      directors = data
+    } catch {
+      directors = null
+    }
+  }
+
+  if (!directors || directors.length === 0) {
+    directors = FALLBACK_DIRECTORS.filter(d => d.is_active)
   }
 
   return (

@@ -1,14 +1,13 @@
 'use client'
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Eye, EyeOff, Lock } from 'lucide-react'
 
 function LoginForm() {
-  const [email, setEmail] = useState('')
+  const [adminId, setAdminId] = useState('')
   const [password, setPassword] = useState('')
   const [showPw, setShowPw] = useState(false)
   const [error, setError] = useState('')
@@ -21,15 +20,24 @@ function LoginForm() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
-      setError('이메일 또는 비밀번호가 올바르지 않습니다')
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: adminId, password }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => null)
+        setError(data?.error || '아이디 또는 비밀번호가 올바르지 않습니다')
+        return
+      }
+      router.push('/admin')
+      router.refresh()
+    } catch {
+      setError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
+    } finally {
       setLoading(false)
-      return
     }
-    router.push('/admin')
-    router.refresh()
   }
 
   return (
@@ -45,19 +53,44 @@ function LoginForm() {
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#E5E7EB] p-6 space-y-4">
         {error && <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded-lg">{error}</p>}
         <div className="space-y-1.5">
-          <Label htmlFor="email">이메일</Label>
-          <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email" placeholder="admin@hueanall.com" className="h-11" />
+          <Label htmlFor="adminId">아이디</Label>
+          <Input
+            id="adminId"
+            type="text"
+            value={adminId}
+            onChange={e => setAdminId(e.target.value)}
+            required
+            autoComplete="username"
+            placeholder="admin"
+            className="h-11"
+          />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="password">비밀번호</Label>
           <div className="relative">
-            <Input id="password" type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required className="h-11 pr-10" />
-            <button type="button" onClick={() => setShowPw(p => !p)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999]">
+            <Input
+              id="password"
+              type={showPw ? 'text' : 'password'}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              className="h-11 pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPw(p => !p)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999]"
+            >
               {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
         </div>
-        <Button type="submit" disabled={loading} className="w-full h-11 bg-[#2D7B6F] hover:bg-[#1E5C52] text-white font-bold">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full h-11 bg-[#2D7B6F] hover:bg-[#1E5C52] text-white font-bold"
+        >
           {loading ? '로그인 중...' : '로그인'}
         </Button>
       </form>

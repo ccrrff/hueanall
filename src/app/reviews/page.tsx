@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
 import { Quote } from 'lucide-react'
 import ReviewCard from '@/components/reviews/ReviewCard'
 import ReviewForm from '@/components/reviews/ReviewForm'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
+import { FALLBACK_REVIEWS } from '@/lib/fallback-data'
+import { getLocalReviews } from '@/lib/local-store'
 
 export const metadata: Metadata = {
   title: '고객 후기 | 휴앤올',
@@ -12,16 +14,25 @@ export const metadata: Metadata = {
 export default async function ReviewsPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let reviews: any[] | null = null
-  try {
-    const supabase = await createClient()
-    const { data } = await supabase
-      .from('reviews')
-      .select('*, directors(name)')
-      .eq('status', 'approved')
-      .order('created_at', { ascending: false })
-    reviews = data
-  } catch {
-    // Supabase 미설정 시 빈 상태 표시
+
+  if (isSupabaseConfigured()) {
+    try {
+      const { createClient } = await import('@/lib/supabase/server')
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('reviews')
+        .select('*, directors(name)')
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false })
+      reviews = data
+    } catch {
+      // Supabase 미설정 시 fallback 사용
+    }
+  }
+
+  if (!reviews || reviews.length === 0) {
+    const localApproved = getLocalReviews('approved')
+    reviews = [...FALLBACK_REVIEWS, ...localApproved]
   }
 
   const hasReviews = reviews && reviews.length > 0

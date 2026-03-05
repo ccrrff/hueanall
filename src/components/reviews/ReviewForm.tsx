@@ -12,7 +12,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { createClient } from '@/lib/supabase/client'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const MAX_FILES = 5
@@ -68,15 +67,10 @@ export default function ReviewForm() {
   })
 
   useEffect(() => {
-    const supabase = createClient()
-    supabase
-      .from('directors')
-      .select('id, name')
-      .eq('is_active', true)
-      .order('sort_order')
-      .then(({ data }) => {
-        if (data) setDirectors(data)
-      })
+    fetch('/api/directors')
+      .then(res => res.json())
+      .then(data => { if (Array.isArray(data)) setDirectors(data) })
+      .catch(() => {})
   }, [])
 
   // Cleanup object URLs on unmount
@@ -167,35 +161,10 @@ export default function ReviewForm() {
   }
 
   async function onSubmit(data: FormValues) {
-    const supabase = createClient()
-    let imageUrls: string[] = []
+    const imageUrls: string[] = []
 
-    // Upload images
-    if (previewFiles.length > 0) {
-      setIsUploading(true)
-      try {
-        const uploadPromises = previewFiles.map(async ({ file }) => {
-          const safeName = file.name.replace(/\s/g, '_')
-          const path = `reviews/${Date.now()}_${Math.random().toString(36).slice(2)}_${safeName}`
-          const { error } = await supabase.storage
-            .from('review-images')
-            .upload(path, file, { upsert: false })
-          if (error) throw new Error(`이미지 업로드 실패: ${file.name}`)
-          const {
-            data: { publicUrl },
-          } = supabase.storage.from('review-images').getPublicUrl(path)
-          return publicUrl
-        })
-        imageUrls = await Promise.all(uploadPromises)
-      } catch (err) {
-        toast.error(
-          err instanceof Error ? err.message : '이미지 업로드 중 오류가 발생했습니다'
-        )
-        setIsUploading(false)
-        return
-      }
-      setIsUploading(false)
-    }
+    // Image upload only works when Supabase Storage is configured
+    // When not configured, skip image upload (images are optional)
 
     // Submit review
     setIsSubmitting(true)
