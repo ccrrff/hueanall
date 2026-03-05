@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers'
 import { createHmac } from 'crypto'
 
-const ADMIN_ID = process.env.ADMIN_ID || 'admin'
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'hueanall2024!'
-const AUTH_SECRET = process.env.AUTH_SECRET || 'hueanall-default-secret-key'
+const ADMIN_ID = (process.env.ADMIN_ID || 'admin').trim()
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || 'hueanall2024').trim()
+const AUTH_SECRET = (process.env.AUTH_SECRET || 'hueanall-default-secret-key').trim()
 const COOKIE_NAME = 'admin_session'
 const TOKEN_TTL_MS = 24 * 60 * 60 * 1000 // 24 hours
 
