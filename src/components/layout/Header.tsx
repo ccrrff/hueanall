@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { Menu, Phone, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
@@ -52,8 +53,8 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         {/* 로고 */}
         <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-          <div className="w-9 h-9 bg-[#2D7B6F] group-hover:bg-[#1E5C52] transition-colors rounded-lg flex items-center justify-center shadow-sm">
-            <span className="text-white font-black text-base leading-none">휴</span>
+          <div className="relative w-9 h-9 bg-white transition-colors rounded-lg flex items-center justify-center overflow-hidden">
+            <Image src="/images/logo.png" alt="휴앤올 로고" fill className="object-contain" />
           </div>
           <div>
             <span className="text-xl font-black text-[#1A1A1A] leading-tight block">
@@ -113,8 +114,8 @@ export default function Header() {
               {/* 모바일 헤더 */}
               <div className="bg-[#2D7B6F] text-white p-4 flex items-center justify-between flex-shrink-0">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-black text-sm">휴</span>
+                  <div className="relative w-8 h-8 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                    <Image src="/images/logo.png" alt="휴앤올 로고" fill className="object-contain" />
                   </div>
                   <div>
                     <p className="font-bold leading-tight">휴앤올</p>

@@ -1,11 +1,12 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Award } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 const placeholderDirectors = [
-  { id: '1', name: '김○○', title: '수석 장례지도사', years: 15, specialties: ['임종케어', '화장절차', '가족상담'], initial: '김' },
-  { id: '2', name: '이○○', title: '장례지도사', years: 10, specialties: ['종교의례', '납골안치', '유족지원'], initial: '이' },
-  { id: '3', name: '박○○', title: '장례지도사', years: 8, specialties: ['기업장례', '해외교포', '긴급출동'], initial: '박' },
+  { id: '1', name: '김○○', title: '수석 장례지도사', years: 15, specialties: ['임종케어', '화장절차', '가족상담'], imgUrl: '/images/director_1.png' },
+  { id: '2', name: '이○○', title: '장례지도사', years: 10, specialties: ['종교의례', '납골안치', '유족지원'], imgUrl: '/images/director_2.png' },
+  { id: '3', name: '박○○', title: '장례지도사', years: 8, specialties: ['기업장례', '해외교포', '긴급출동'], imgUrl: '/images/director_3.png' },
 ]
 
 export default function DirectorsPreview() {
@@ -26,8 +27,8 @@ export default function DirectorsPreview() {
               key={director.id}
               className="bg-white rounded-2xl p-6 border border-[#E5E7EB] hover:border-[#2D7B6F] hover:shadow-lg transition-all duration-300 text-center"
             >
-              <div className="w-20 h-20 bg-[#2D7B6F] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <span className="text-white text-2xl font-black">{director.initial}</span>
+              <div className="w-20 h-20 bg-[#2D7B6F] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden relative">
+                <Image src={director.imgUrl} alt={director.name} fill className="object-cover object-top" />
               </div>
               <h3 className="text-xl font-bold text-[#1A1A1A] mb-1">{director.name}</h3>
               <p className="text-[#2D7B6F] font-medium text-sm mb-3">{director.title}</p>

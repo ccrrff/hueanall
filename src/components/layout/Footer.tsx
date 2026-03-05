@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react'
 import { SITE_CONFIG, NAV_ITEMS } from '@/lib/constants'
 
@@ -12,8 +13,8 @@ export default function Footer() {
             {/* 회사 정보 */}
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-[#2D7B6F] rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">휴</span>
+                <div className="relative w-8 h-8 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                  <Image src="/images/logo.png" alt="휴앤올 로고" fill className="object-contain" />
                 </div>
                 <span className="text-lg font-bold">휴앤올</span>
               </div>

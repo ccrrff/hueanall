@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import HeroSection from '@/components/home/HeroSection'
 import ServicesSection from '@/components/home/ServicesSection'
 import DirectorsPreview from '@/components/home/DirectorsPreview'
@@ -32,8 +33,12 @@ export default function HomePage() {
       <HeroSection />
 
       {/* 간편 상담 신청 */}
-      <section id="quick-consult" className="py-16 bg-[#F8F9FA]">
-        <div className="max-w-6xl mx-auto px-4">
+      <section id="quick-consult" className="relative py-16">
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <Image src="/images/consult_bg.png" alt="간편 상담 배경" fill className="object-cover opacity-60" />
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px]" />
+        </div>
+        <div className="relative z-10 max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* 좌측: 안내 문구 */}
             <div>
