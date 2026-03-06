@@ -3,7 +3,7 @@ import { getAdminSession } from '@/lib/auth'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const MAX_FILE_SIZE = 5 * 1024 * 1024
+const MAX_FILE_SIZE = 4 * 1024 * 1024 // 4MB (Vercel serverless 제한)
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'JPG, PNG, WebP 형식만 가능합니다' }, { status: 400 })
     }
     if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json({ error: '파일 크기는 5MB 이하만 가능합니다' }, { status: 400 })
+      return NextResponse.json({ error: '파일 크기는 4MB 이하만 가능합니다' }, { status: 400 })
     }
 
     const { createAdminClient } = await import('@/lib/supabase/admin')

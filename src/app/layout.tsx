@@ -1,10 +1,7 @@
 import type { Metadata } from 'next'
 import { Noto_Sans_KR } from 'next/font/google'
 import './globals.css'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
-import FloatingCta from '@/components/layout/FloatingCta'
-import SideActions from '@/components/layout/SideActions'
+import PublicLayoutParts from '@/components/layout/PublicLayoutParts'
 import { Toaster } from '@/components/ui/sonner'
 
 const notoSansKR = Noto_Sans_KR({
@@ -123,11 +120,8 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col">
-        <Header />
+        <PublicLayoutParts />
         <main className="flex-1">{children}</main>
-        <Footer />
-        <SideActions />
-        <FloatingCta />
         <Toaster />
       </body>
     </html>

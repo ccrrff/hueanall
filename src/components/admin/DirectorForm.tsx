@@ -24,10 +24,18 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
   const [photoRemoved, setPhotoRemoved] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const CLIENT_MAX_FILE_SIZE = 4 * 1024 * 1024 // 4MB (Vercel 413 방지)
+
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] ?? null
+    if (file && file.size > CLIENT_MAX_FILE_SIZE) {
+      setPhotoError('파일 크기는 4MB 이하만 가능합니다 (서버 제한)')
+      if (fileInputRef.current) fileInputRef.current.value = ''
+      return
+    }
     setPhotoFile(file)
     setPhotoRemoved(false)
+    setPhotoError(null)
     if (file) {
       setPhotoPreview(URL.createObjectURL(file))
     }
@@ -75,11 +83,20 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
             method: 'POST',
             body: fd,
           })
-          const json = await res.json()
+          let json: { url?: string; error?: string } = {}
+          try {
+            json = await res.json()
+          } catch {
+            throw new Error(
+              res.status === 413
+                ? '파일이 너무 큽니다. 4MB 이하의 이미지를 사용해주세요.'
+                : `서버 오류가 발생했습니다 (${res.status})`
+            )
+          }
           if (!res.ok || json.error) {
             throw new Error(json.error || '사진 업로드에 실패했습니다')
           }
-          photo_url = json.url
+          photo_url = json.url!
         } catch (uploadErr) {
           photo_url = null
           setPhotoError(
@@ -182,7 +199,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
               >
                 {photoPreview ? '사진 변경' : '사진 선택'}
               </button>
-              <p className="text-xs text-[#9CA3AF] mt-1">JPG, PNG, WebP (최대 5MB)</p>
+              <p className="text-xs text-[#9CA3AF] mt-1">JPG, PNG, WebP (최대 4MB)</p>
               <input
                 ref={fileInputRef}
                 type="file"
