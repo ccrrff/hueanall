@@ -32,6 +32,7 @@ export default function QuickConsultForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
+    reset,
   } = useForm<QuickFormValues>({
     resolver: zodResolver(quickFormSchema),
     defaultValues: { privacy_agreed: false },
@@ -81,7 +82,10 @@ export default function QuickConsultForm() {
           </p>
         </div>
         <button
-          onClick={() => setSubmitted(false)}
+          onClick={() => {
+            setSubmitted(false)
+            reset()
+          }}
           className="text-sm text-[#2D7B6F] underline underline-offset-2"
         >
           다시 신청하기

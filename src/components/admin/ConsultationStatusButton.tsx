@@ -20,9 +20,9 @@ export default function ConsultationStatusButton({ id, currentStatus }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = e.target.value as 'pending' | 'contacted' | 'completed' | 'cancelled'
     if (newStatus === currentStatus) return
-    startTransition(() => {
+    startTransition(() =>
       updateConsultationStatus(id, newStatus)
-    })
+    )
   }
 
   return (

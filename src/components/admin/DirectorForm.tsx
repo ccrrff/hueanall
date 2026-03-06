@@ -18,6 +18,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [photoError, setPhotoError] = useState<string | null>(null)
   const [photoFile, setPhotoFile] = useState<File | null>(null)
   const [photoPreview, setPhotoPreview] = useState<string | null>(director?.photo_url ?? null)
   const [photoRemoved, setPhotoRemoved] = useState(false)
@@ -43,6 +44,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
     e.preventDefault()
     setLoading(true)
     setError(null)
+    setPhotoError(null)
 
     try {
       const form = new FormData(e.currentTarget)
@@ -66,9 +68,18 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
       let photo_url = director?.photo_url ?? null
 
       if (photoFile) {
-        const fd = new FormData()
-        fd.append('photo', photoFile)
-        photo_url = await uploadDirectorPhoto(fd)
+        try {
+          const fd = new FormData()
+          fd.append('photo', photoFile)
+          photo_url = await uploadDirectorPhoto(fd)
+        } catch (uploadErr) {
+          photo_url = null
+          setPhotoError(
+            uploadErr instanceof Error
+              ? `사진 업로드 실패: ${uploadErr.message}`
+              : '사진 업로드에 실패했습니다. 지도사 정보는 사진 없이 저장됩니다.'
+          )
+        }
       } else if (photoRemoved) {
         if (mode === 'edit' && director?.photo_url) {
           await deleteDirectorPhoto(director.photo_url)
@@ -114,6 +125,12 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
             <span>{error}</span>
           </div>
         )}
+        {photoError && (
+          <div className="bg-amber-50 border border-amber-200 text-amber-700 text-sm rounded-lg px-4 py-3 flex items-start gap-2">
+            <span className="shrink-0 mt-0.5">⚠</span>
+            <span>{photoError}</span>
+          </div>
+        )}
 
         {/* 프로필 사진 */}
         <div>
@@ -153,7 +170,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
               >
                 {photoPreview ? '사진 변경' : '사진 선택'}
               </button>
-              <p className="text-xs text-[#9CA3AF] mt-1">JPG, PNG (최대 2MB)</p>
+              <p className="text-xs text-[#9CA3AF] mt-1">JPG, PNG, WebP (최대 5MB)</p>
               <input
                 ref={fileInputRef}
                 type="file"

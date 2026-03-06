@@ -49,6 +49,7 @@ export default function ReviewForm() {
   const [submitted, setSubmitted] = useState(false)
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const ratingRef = useRef<HTMLDivElement>(null)
 
   const {
     register,
@@ -64,6 +65,7 @@ export default function ReviewForm() {
       rating: 0,
       content: '',
     },
+    shouldFocusError: true,
   })
 
   useEffect(() => {
@@ -183,12 +185,16 @@ export default function ReviewForm() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => null)
+        if (body?.details) {
+          console.error('Review submission validation details:', body.details)
+        }
         throw new Error(body?.error || '후기 제출에 실패했습니다')
       }
 
       toast.success('후기가 성공적으로 접수되었습니다')
       setSubmitted(true)
     } catch (err) {
+      console.error('Review submission error:', err)
       toast.error(
         err instanceof Error ? err.message : '후기 제출 중 오류가 발생했습니다'
       )
@@ -230,7 +236,20 @@ export default function ReviewForm() {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, (fieldErrors) => {
+        // Scroll to first error field — rating uses a custom UI so we handle it specially
+        if (fieldErrors.rating && ratingRef.current) {
+          ratingRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          return
+        }
+        // For other fields, the browser's default focus behavior handles scrolling
+        const firstErrorKey = Object.keys(fieldErrors)[0]
+        if (firstErrorKey) {
+          const el = document.getElementById(firstErrorKey)
+          el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          el?.focus()
+        }
+      })}
       className="max-w-2xl mx-auto space-y-6"
     >
       {/* Customer name */}
@@ -267,7 +286,7 @@ export default function ReviewForm() {
       </div>
 
       {/* Star rating */}
-      <div className="space-y-2">
+      <div ref={ratingRef} className="space-y-2">
         <Label>별점 *</Label>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((star) => {

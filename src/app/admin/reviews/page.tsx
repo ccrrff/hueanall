@@ -24,8 +24,8 @@ export default async function AdminReviewsPage({
 
   if (isSupabaseConfigured()) {
     try {
-      const { createClient } = await import('@/lib/supabase/server')
-      const supabase = await createClient()
+      const { createAdminClient } = await import('@/lib/supabase/admin')
+      const supabase = createAdminClient()
       let query = supabase
         .from('reviews')
         .select('*, directors(name)')
