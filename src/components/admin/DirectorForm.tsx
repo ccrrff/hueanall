@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Camera, X, Loader2 } from 'lucide-react'
-import { createDirector, updateDirector } from '@/app/admin/directors/actions'
 import { Button } from '@/components/ui/button'
 import type { Director } from '@/types/database'
 
@@ -129,10 +128,19 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
         is_active,
       }
 
-      if (mode === 'new') {
-        await createDirector(data)
-      } else {
-        await updateDirector(director!.id, data)
+      const res = await fetch('/api/admin/directors', {
+        method: mode === 'new' ? 'POST' : 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(mode === 'new' ? data : { id: director!.id, ...data }),
+      })
+      let json: { success?: boolean; error?: string } = {}
+      try {
+        json = await res.json()
+      } catch {
+        throw new Error(`서버 오류 (${res.status})`)
+      }
+      if (!res.ok || json.error) {
+        throw new Error(json.error || '저장에 실패했습니다')
       }
 
       router.push('/admin/directors')
