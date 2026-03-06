@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Camera, X, Loader2 } from 'lucide-react'
-import { createDirector, updateDirector, uploadDirectorPhoto, deleteDirectorPhoto } from '@/app/admin/directors/actions'
+import { createDirector, updateDirector } from '@/app/admin/directors/actions'
 import { Button } from '@/components/ui/button'
 import type { Director } from '@/types/database'
 
@@ -71,7 +71,15 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
         try {
           const fd = new FormData()
           fd.append('photo', photoFile)
-          photo_url = await uploadDirectorPhoto(fd)
+          const res = await fetch('/api/admin/upload-director-photo', {
+            method: 'POST',
+            body: fd,
+          })
+          const json = await res.json()
+          if (!res.ok || json.error) {
+            throw new Error(json.error || '사진 업로드에 실패했습니다')
+          }
+          photo_url = json.url
         } catch (uploadErr) {
           photo_url = null
           setPhotoError(
@@ -82,7 +90,11 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
         }
       } else if (photoRemoved) {
         if (mode === 'edit' && director?.photo_url) {
-          await deleteDirectorPhoto(director.photo_url)
+          await fetch('/api/admin/upload-director-photo', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ photoUrl: director.photo_url }),
+          }).catch(() => {})
         }
         photo_url = null
       }
