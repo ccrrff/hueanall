@@ -13,9 +13,14 @@ export default function PublicLayoutParts() {
   return (
     <>
       <Header />
-      <Footer />
       <SideActions />
       <FloatingCta />
     </>
   )
+}
+
+export function PublicFooter() {
+  const pathname = usePathname()
+  if (pathname.startsWith('/admin')) return null
+  return <Footer />
 }

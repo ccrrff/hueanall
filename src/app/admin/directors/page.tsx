@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { PlusCircle, Pencil, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
-import { FALLBACK_DIRECTORS } from '@/lib/fallback-data'
 import type { Director } from '@/types/database'
 import DeleteDirectorButton from '@/components/admin/DeleteDirectorButton'
 import ToggleActiveButton from '@/components/admin/ToggleActiveButton'
@@ -23,10 +22,8 @@ export default async function AdminDirectorsPage() {
         .order('sort_order', { ascending: true })
       directors = data ?? []
     } catch {
-      directors = FALLBACK_DIRECTORS
+      directors = []
     }
-  } else {
-    directors = FALLBACK_DIRECTORS
   }
 
   return (

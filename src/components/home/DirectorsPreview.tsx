@@ -1,15 +1,29 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight, Award } from 'lucide-react'
+import { ArrowRight, Award, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { isSupabaseConfigured } from '@/lib/supabase/config'
 
-const placeholderDirectors = [
-  { id: '1', name: '김○○', title: '수석 장례지도사', years: 15, specialties: ['임종케어', '화장절차', '가족상담'], imgUrl: '/images/director_1.png' },
-  { id: '2', name: '이○○', title: '장례지도사', years: 10, specialties: ['종교의례', '납골안치', '유족지원'], imgUrl: '/images/director_2.png' },
-  { id: '3', name: '박○○', title: '장례지도사', years: 8, specialties: ['기업장례', '해외교포', '긴급출동'], imgUrl: '/images/director_3.png' },
-]
+export default async function DirectorsPreview() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let directors: any[] = []
 
-export default function DirectorsPreview() {
+  if (isSupabaseConfigured()) {
+    try {
+      const { createClient } = await import('@/lib/supabase/server')
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('directors')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order', { ascending: true })
+        .limit(3)
+      directors = data ?? []
+    } catch {
+      directors = []
+    }
+  }
+
   return (
     <section id="directors" className="py-20 bg-[#F8F9FA]">
       <div className="max-w-6xl mx-auto px-4">
@@ -21,31 +35,44 @@ export default function DirectorsPreview() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {placeholderDirectors.map((director) => (
-            <div
-              key={director.id}
-              className="bg-white rounded-2xl p-6 border border-[#E5E7EB] hover:border-[#2D7B6F] hover:shadow-lg transition-all duration-300 text-center"
-            >
-              <div className="w-20 h-20 bg-[#2D7B6F] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden relative">
-                <Image src={director.imgUrl} alt={director.name} fill className="object-cover object-top" />
+        {directors.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {directors.map((director) => (
+              <div
+                key={director.id}
+                className="bg-white rounded-2xl p-6 border border-[#E5E7EB] hover:border-[#2D7B6F] hover:shadow-lg transition-all duration-300 text-center"
+              >
+                <div className="w-20 h-20 bg-[#2D7B6F] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden relative">
+                  {director.photo_url ? (
+                    <Image src={director.photo_url} alt={director.name} fill className="object-cover object-top" />
+                  ) : (
+                    <User className="w-10 h-10 text-white" />
+                  )}
+                </div>
+                <h3 className="text-xl font-bold text-[#1A1A1A] mb-1">{director.name}</h3>
+                <p className="text-[#2D7B6F] font-medium text-sm mb-3">{director.title}</p>
+                <div className="flex items-center justify-center gap-1.5 text-[#666666] text-sm mb-4">
+                  <Award className="w-4 h-4 text-[#2D7B6F]" />
+                  경력 {director.years_experience}년
+                </div>
+                {Array.isArray(director.specialties) && director.specialties.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 justify-center">
+                    {director.specialties.map((s: string) => (
+                      <span key={s} className="bg-[#F0F9F7] text-[#2D7B6F] text-xs px-2.5 py-1 rounded-full font-medium">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-              <h3 className="text-xl font-bold text-[#1A1A1A] mb-1">{director.name}</h3>
-              <p className="text-[#2D7B6F] font-medium text-sm mb-3">{director.title}</p>
-              <div className="flex items-center justify-center gap-1.5 text-[#666666] text-sm mb-4">
-                <Award className="w-4 h-4 text-[#2D7B6F]" />
-                경력 {director.years}년
-              </div>
-              <div className="flex flex-wrap gap-1.5 justify-center">
-                {director.specialties.map((s) => (
-                  <span key={s} className="bg-[#F0F9F7] text-[#2D7B6F] text-xs px-2.5 py-1 rounded-full font-medium">
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-10 mb-10">
+            <User className="w-12 h-12 text-[#D1EDE9] mx-auto mb-4" />
+            <p className="text-[#999999]">현재 등록된 장례지도사가 없습니다</p>
+          </div>
+        )}
 
         <div className="text-center">
           <Button asChild variant="outline" className="border-[#2D7B6F] text-[#2D7B6F] hover:bg-[#F0F9F7] rounded-full px-8">

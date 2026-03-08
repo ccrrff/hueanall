@@ -1,14 +1,13 @@
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Users, MessageSquare, Star, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, Star, LogOut } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 
 const NAV = [
   { label: '대시보드', href: '/admin', icon: LayoutDashboard },
   { label: '장례지도사', href: '/admin/directors', icon: Users },
-  { label: '상담 관리', href: '/admin/consultations', icon: MessageSquare },
   { label: '후기 관리', href: '/admin/reviews', icon: Star },
 ]
 

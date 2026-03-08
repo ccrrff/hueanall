@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+
+export const dynamic = 'force-dynamic'
 import DirectorConsultForm from '@/components/directors/DirectorConsultForm'
 import { Star, Award, Phone, BadgeCheck } from 'lucide-react'
 import Image from 'next/image'

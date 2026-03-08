@@ -3,6 +3,8 @@ import Image from 'next/image'
 import HeroSection from '@/components/home/HeroSection'
 import ServicesSection from '@/components/home/ServicesSection'
 import DirectorsPreview from '@/components/home/DirectorsPreview'
+
+export const dynamic = 'force-dynamic'
 import ReviewsPreview from '@/components/home/ReviewsPreview'
 import QuickConsultForm from '@/components/home/QuickConsultForm'
 import KakaoBanner from '@/components/home/KakaoBanner'

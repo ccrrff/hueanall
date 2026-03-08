@@ -3,8 +3,6 @@ import Link from 'next/link'
 import { Star } from 'lucide-react'
 import ReviewActionButtons from '@/components/admin/ReviewActionButtons'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
-import { FALLBACK_REVIEWS } from '@/lib/fallback-data'
-import { getLocalReviews } from '@/lib/local-store'
 
 const STATUS_TABS = [
   { value: '', label: '전체' },
@@ -38,14 +36,6 @@ export default async function AdminReviewsPage({
     }
   }
 
-  if (!isSupabaseConfigured()) {
-    const localReviews = getLocalReviews(status || undefined)
-    // Show fallback approved reviews + all local reviews
-    const fallback = status
-      ? FALLBACK_REVIEWS.filter(r => r.status === status)
-      : FALLBACK_REVIEWS
-    reviews = [...fallback, ...localReviews]
-  }
 
   return (
     <div className="p-6 max-w-7xl">

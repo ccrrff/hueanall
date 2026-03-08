@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import DirectorCard from '@/components/directors/DirectorCard'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
-import { FALLBACK_DIRECTORS } from '@/lib/fallback-data'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: '장례지도사 소개 | 휴앤올',
@@ -18,19 +19,24 @@ export default async function DirectorsPage() {
     try {
       const { createClient } = await import('@/lib/supabase/server')
       const supabase = await createClient()
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('directors')
         .select('*')
         .eq('is_active', true)
         .order('sort_order', { ascending: true })
+      if (error) {
+        console.error('[directors page] Supabase error:', error.message)
+      }
+      console.log('[directors page] fetched:', data?.length, 'directors')
       directors = data
-    } catch {
+    } catch (err) {
+      console.error('[directors page] catch error:', err)
       directors = null
     }
   }
 
-  if (!directors || directors.length === 0) {
-    directors = FALLBACK_DIRECTORS.filter(d => d.is_active)
+  if (!directors) {
+    directors = []
   }
 
   return (

@@ -3,8 +3,8 @@ import { Quote } from 'lucide-react'
 import ReviewCard from '@/components/reviews/ReviewCard'
 import ReviewForm from '@/components/reviews/ReviewForm'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
-import { FALLBACK_REVIEWS } from '@/lib/fallback-data'
-import { getLocalReviews } from '@/lib/local-store'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: '고객 후기 | 휴앤올',
@@ -25,14 +25,14 @@ export default async function ReviewsPage() {
         .eq('status', 'approved')
         .order('created_at', { ascending: false })
       reviews = data
+      console.log('[reviews page] fetched:', data?.length, 'reviews, image_urls:', data?.map(r => r.image_urls))
     } catch {
       // Supabase 미설정 시 fallback 사용
     }
   }
 
-  if (!reviews || reviews.length === 0) {
-    const localApproved = getLocalReviews('approved')
-    reviews = [...FALLBACK_REVIEWS, ...localApproved]
+  if (!reviews) {
+    reviews = []
   }
 
   const hasReviews = reviews && reviews.length > 0

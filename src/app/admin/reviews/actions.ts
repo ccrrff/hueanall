@@ -2,7 +2,6 @@
 import { revalidatePath } from 'next/cache'
 import { getAdminSession } from '@/lib/auth'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
-import { updateLocalReviewStatus } from '@/lib/local-store'
 
 async function verifyAdmin() {
   // 1. Local cookie auth
@@ -29,7 +28,7 @@ export async function approveReview(id: string) {
     const { error } = await supabase.from('reviews').update({ status: 'approved' }).eq('id', id)
     if (error) throw new Error(error.message)
   } else {
-    updateLocalReviewStatus(id, 'approved')
+    throw new Error('Supabase가 설정되지 않았습니다')
   }
 
   revalidatePath('/admin/reviews')
@@ -45,7 +44,7 @@ export async function rejectReview(id: string) {
     const { error } = await supabase.from('reviews').update({ status: 'rejected' }).eq('id', id)
     if (error) throw new Error(error.message)
   } else {
-    updateLocalReviewStatus(id, 'rejected')
+    throw new Error('Supabase가 설정되지 않았습니다')
   }
 
   revalidatePath('/admin/reviews')

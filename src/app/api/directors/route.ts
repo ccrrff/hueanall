@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
-import { FALLBACK_DIRECTORS } from '@/lib/fallback-data'
 
 export async function GET() {
   if (isSupabaseConfigured()) {
@@ -14,10 +13,8 @@ export async function GET() {
         .order('sort_order')
       return NextResponse.json(data ?? [])
     } catch {
-      // Fall through to fallback
+      // Fall through
     }
   }
-  return NextResponse.json(
-    FALLBACK_DIRECTORS.filter(d => d.is_active).map(d => ({ id: d.id, name: d.name }))
-  )
+  return NextResponse.json([])
 }

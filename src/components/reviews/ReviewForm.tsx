@@ -165,8 +165,30 @@ export default function ReviewForm() {
   async function onSubmit(data: FormValues) {
     const imageUrls: string[] = []
 
-    // Image upload only works when Supabase Storage is configured
-    // When not configured, skip image upload (images are optional)
+    // Upload images to Supabase Storage
+    if (previewFiles.length > 0) {
+      setIsUploading(true)
+      try {
+        for (const pf of previewFiles) {
+          const formData = new FormData()
+          formData.append('file', pf.file)
+          const res = await fetch('/api/reviews/upload', { method: 'POST', body: formData })
+          if (!res.ok) {
+            const body = await res.json().catch(() => null)
+            throw new Error(body?.error || '이미지 업로드에 실패했습니다')
+          }
+          const { url } = await res.json()
+          imageUrls.push(url)
+        }
+      } catch (err) {
+        console.error('Image upload error:', err)
+        toast.error(err instanceof Error ? err.message : '이미지 업로드 중 오류가 발생했습니다')
+        setIsUploading(false)
+        return
+      } finally {
+        setIsUploading(false)
+      }
+    }
 
     // Submit review
     setIsSubmitting(true)
