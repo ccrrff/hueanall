@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Menu, Phone, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import { NAV_ITEMS, SITE_CONFIG } from '@/lib/constants'
 
@@ -30,22 +30,18 @@ export default function Header() {
     >
       {/* 상단 공지 바 */}
       <div className="bg-[#2D7B6F] text-white">
-        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between text-sm">
-          <span className="hidden sm:block opacity-90 text-xs sm:text-sm">
-            전문 장례지도사가 처음부터 끝까지 함께합니다
+        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between text-xs sm:text-sm">
+          <span className="opacity-90 truncate">
+            <span className="hidden sm:inline">전문 장례지도사가 처음부터 끝까지 함께합니다</span>
+            <span className="sm:hidden">24시간 장례 상담</span>
           </span>
-          <div className="flex items-center gap-3 ml-auto">
-            <span className="hidden sm:flex items-center gap-1.5 opacity-80 text-xs">
-              <Phone className="w-3.5 h-3.5" />
-              24시간 긴급 상담
-            </span>
-            <a
-              href={`tel:${SITE_CONFIG.phone.primary.replace(/-/g, '')}`}
-              className="font-bold tracking-wide text-sm hover:opacity-80 transition-opacity"
-            >
-              {SITE_CONFIG.phone.primary}
-            </a>
-          </div>
+          <a
+            href={`tel:${SITE_CONFIG.phone.primary.replace(/-/g, '')}`}
+            className="flex items-center gap-1.5 font-bold tracking-wide hover:opacity-80 transition-opacity flex-shrink-0 ml-3"
+          >
+            <Phone className="w-3.5 h-3.5" />
+            {SITE_CONFIG.phone.primary}
+          </a>
         </div>
       </div>
 
@@ -109,7 +105,8 @@ export default function Header() {
               <Menu className="w-6 h-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-[80vw] max-w-[320px] p-0">
+          <SheetContent side="right" showCloseButton={false} className="w-[80vw] max-w-[320px] p-0 gap-0 bg-white">
+            <SheetTitle className="sr-only">메뉴</SheetTitle>
             <div className="flex flex-col h-full">
               {/* 모바일 헤더 */}
               <div className="bg-[#2D7B6F] text-white p-4 flex items-center justify-between flex-shrink-0">
