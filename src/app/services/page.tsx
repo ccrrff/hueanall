@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { CheckCircle2 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -7,130 +8,159 @@ export const metadata: Metadata = {
   description: '휴앤올의 후불제 장례 서비스를 소개합니다. 전담 장례지도사가 처음부터 끝까지 함께합니다.',
 }
 
-const SERVICES = [
-  {
-    title: '기본 장례',
-    badge: '가장 인기',
-    desc: '합리적인 비용으로 정성껏 진행하는 기본 장례 패키지입니다.',
-    features: [
-      '전담 장례지도사 1:1 배정',
-      '염습 · 입관 전 과정 진행',
-      '빈소 설치 및 운영',
-      '발인 · 운구 서비스',
-      '화장장 예약 대행',
-    ],
-    highlight: true,
-  },
-  {
-    title: '종교의례 장례',
-    badge: '기독교 · 불교 · 천주교',
-    desc: '고인의 종교에 맞게 예를 갖춘 의례로 진행합니다.',
-    features: [
-      '종교별 의전 전문 지도사',
-      '기독교 / 불교 / 천주교 맞춤 의례',
-      '종교 단체 협력 네트워크',
-      '납골당 · 수목장 안내',
-      '유족 심리 상담 연계',
-    ],
-    highlight: false,
-  },
-  {
-    title: '긴급 출동 서비스',
-    badge: '24시간',
-    desc: '갑작스러운 상황에 24시간 365일 즉시 출동합니다.',
-    features: [
-      '접수 후 1시간 내 현장 도착',
-      '병원 · 자택 어디서든 가능',
-      '야간 · 공휴일 동일 서비스',
-      '임시 안치실 연계',
-      '행정 서류 대행',
-    ],
-    highlight: false,
-  },
-  {
-    title: '기업 · 단체 장례',
-    badge: '법인 계약 가능',
-    desc: '기업 임직원 및 단체를 위한 맞춤 장례 서비스입니다.',
-    features: [
-      '법인 후불제 계약',
-      '임직원 복지 연계 가능',
-      '대형 빈소 운영',
-      '전용 장례지도사 배정',
-      '사후 처리 행정 대행',
-    ],
-    highlight: false,
-  },
-]
+const SERVICES: {
+  title: string
+  badge: string
+  desc: string
+  image: string
+  features: string[]
+  highlight: boolean
+}[] = [
+    {
+      title: '기본 장례',
+      badge: '가장 인기',
+      desc: '합리적인 비용으로 정성껏 진행하는 기본 장례 패키지입니다.',
+      image: '/images/services/photo_service_basic.png',
+      features: [
+        '전담 장례지도사 1:1 배정',
+        '염습 · 입관 전 과정 진행',
+        '빈소 설치 및 운영',
+        '발인 · 운구 서비스',
+        '화장장 예약 대행',
+      ],
+      highlight: true,
+    },
+    {
+      title: '종교의례 장례',
+      badge: '기독교 · 불교 · 천주교',
+      desc: '고인의 종교에 맞게 예를 갖춘 의례로 진행합니다.',
+      image: '/images/services/photo_service_religion.png',
+      features: [
+        '종교별 의전 전문 지도사',
+        '기독교 / 불교 / 천주교 맞춤 의례',
+        '종교 단체 협력 네트워크',
+        '납골당 · 수목장 안내',
+        '유족 심리 상담 연계',
+      ],
+      highlight: false,
+    },
+    {
+      title: '긴급 출동 서비스',
+      badge: '24시간',
+      desc: '갑작스러운 상황에 24시간 365일 즉시 출동합니다.',
+      image: '/images/services/photo_service_emergency.png',
+      features: [
+        '접수 후 1시간 내 현장 도착',
+        '병원 · 자택 어디서든 가능',
+        '야간 · 공휴일 동일 서비스',
+        '임시 안치실 연계',
+        '행정 서류 대행',
+      ],
+      highlight: false,
+    },
+    {
+      title: '기업 · 단체 장례',
+      badge: '법인 계약 가능',
+      desc: '기업 임직원 및 단체를 위한 맞춤 장례 서비스입니다.',
+      image: '/images/services/photo_service_corporate.png',
+      features: [
+        '법인 후불제 계약',
+        '임직원 복지 연계 가능',
+        '대형 빈소 운영',
+        '전용 장례지도사 배정',
+        '사후 처리 행정 대행',
+      ],
+      highlight: false,
+    },
+  ]
 
 export default function ServicesPage() {
   return (
     <>
       {/* 헤더 */}
-      <section className="bg-gradient-to-b from-[#F0F9F7] to-white py-16">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <span className="text-sm font-semibold uppercase tracking-wider text-[#2D7B6F]">
+      <section className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/services/service_page_hero.png"
+            alt="장례 서비스 배경"
+            fill
+            className="object-cover opacity-60"
+            priority
+          />
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+          <span className="text-sm font-bold uppercase tracking-widest text-[#2D7B6F] bg-white/80 px-4 py-1.5 rounded-full inline-block mb-6 shadow-sm">
             Services
           </span>
-          <h1 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">장례 서비스</h1>
-          <p className="mt-4 text-base text-gray-600 sm:text-lg">
-            모든 서비스는 후불제로 진행됩니다. 비용 걱정 없이 연락주세요.
+          <h1 className="text-4xl font-black text-gray-900 sm:text-5xl tracking-tight mb-6">장례 서비스</h1>
+          <p className="text-lg text-gray-700 sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+            모든 서비스는 후불제로 진행됩니다.<br className="hidden sm:block" /> 비용 걱정 없이 편안하게 연락주세요.
           </p>
         </div>
       </section>
 
       {/* 서비스 카드 */}
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="mx-auto max-w-6xl px-4 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {SERVICES.map((service) => (
             <div
               key={service.title}
-              className={`rounded-2xl p-8 border ${
-                service.highlight
-                  ? 'bg-[#2D7B6F] text-white border-[#2D7B6F]'
-                  : 'bg-white border-[#E5E7EB] hover:border-[#2D7B6F] hover:shadow-lg'
-              } transition-all duration-300`}
+              className={`flex flex-col rounded-2xl overflow-hidden border ${service.highlight
+                ? 'bg-[#2D7B6F] text-white border-[#2D7B6F]'
+                : 'bg-white border-[#E5E7EB] hover:border-[#2D7B6F] hover:shadow-xl'
+                } transition-all duration-500 group`}
             >
-              <span
-                className={`text-xs font-bold px-3 py-1 rounded-full inline-block mb-4 ${
-                  service.highlight
-                    ? 'bg-white/20 text-white'
-                    : 'bg-[#F0F9F7] text-[#2D7B6F]'
-                }`}
-              >
-                {service.badge}
-              </span>
-              <h2
-                className={`text-xl font-bold mb-3 ${
-                  service.highlight ? 'text-white' : 'text-[#1A1A1A]'
-                }`}
-              >
-                {service.title}
-              </h2>
-              <p
-                className={`text-sm leading-relaxed mb-6 ${
-                  service.highlight ? 'text-white/80' : 'text-[#666666]'
-                }`}
-              >
-                {service.desc}
-              </p>
-              <ul className="space-y-2.5">
-                {service.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2.5">
-                    <CheckCircle2
-                      className={`w-4 h-4 flex-shrink-0 ${
-                        service.highlight ? 'text-white/80' : 'text-[#2D7B6F]'
+              <div className="relative w-full aspect-[16/9] overflow-hidden">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className={`absolute inset-0 ${service.highlight ? 'bg-[#2D7B6F]/20' : 'bg-black/5'} group-hover:bg-transparent transition-colors duration-500`} />
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div>
+                  <span
+                    className={`text-xs font-bold px-3 py-1 rounded-full inline-block mb-4 shadow-sm ${service.highlight
+                      ? 'bg-white/20 text-white backdrop-blur-sm'
+                      : 'bg-[#F0F9F7] text-[#2D7B6F]'
                       }`}
-                    />
-                    <span
-                      className={`text-sm ${
-                        service.highlight ? 'text-white/90' : 'text-[#444444]'
+                  >
+                    {service.badge}
+                  </span>
+                  <h2
+                    className={`text-2xl font-bold mb-3 tracking-tight ${service.highlight ? 'text-white' : 'text-[#1A1A1A]'
                       }`}
-                    >
-                      {f}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                  >
+                    {service.title}
+                  </h2>
+                  <p
+                    className={`text-base leading-relaxed mb-8 font-medium ${service.highlight ? 'text-white/90' : 'text-[#666666]'
+                      }`}
+                  >
+                    {service.desc}
+                  </p>
+                </div>
+                <ul className="space-y-3.5 mt-auto bg-white/5 rounded-xl p-4">
+                  {service.features.map((f) => (
+                    <li key={f} className="flex items-center gap-3">
+                      <CheckCircle2
+                        className={`w-5 h-5 flex-shrink-0 ${service.highlight ? 'text-white/90' : 'text-[#2D7B6F]'
+                          }`}
+                      />
+                      <span
+                        className={`text-sm font-medium ${service.highlight ? 'text-white' : 'text-[#444444]'
+                          }`}
+                      >
+                        {f}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>
