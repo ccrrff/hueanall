@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star } from 'lucide-react'
+import { RiStarFill as Star } from '@remixicon/react'
 import ReviewActionButtons from '@/components/admin/ReviewActionButtons'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 
@@ -51,7 +51,7 @@ export default async function AdminReviewsPage({
             href={tab.value ? `/admin/reviews?status=${tab.value}` : '/admin/reviews'}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               (status ?? '') === tab.value
-                ? 'bg-[#2D7B6F] text-white'
+                ? 'bg-[#1A473F] text-white'
                 : 'text-[#666666] hover:bg-[#F8F9FA]'
             }`}
           >
@@ -83,7 +83,7 @@ export default async function AdminReviewsPage({
                   <div className="flex items-center gap-2 text-xs text-[#666666]">
                     <span className="font-medium">{review.customer_name}</span>
                     {(review.directors as { name?: string } | null)?.name && (
-                      <span className="text-[#2D7B6F]">· {(review.directors as { name?: string }).name} 지도사</span>
+                      <span className="text-[#1A473F]">· {(review.directors as { name?: string }).name} 지도사</span>
                     )}
                   </div>
                   {images.length > 0 && (

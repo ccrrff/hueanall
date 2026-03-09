@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Phone, MessageCircle } from 'lucide-react'
+import { RiPhoneLine as Phone, RiMessage3Line as MessageCircle } from '@remixicon/react'
 import { cn } from '@/lib/utils'
 import { SITE_CONFIG } from '@/lib/constants'
 
@@ -22,11 +22,11 @@ export default function FloatingCta() {
       role="complementary"
       aria-label="긴급 상담 버튼"
       className={cn(
-        'md:hidden fixed bottom-0 left-0 right-0 z-40',
+        'md:hidden fixed bottom-5 left-4 right-4 z-40',
         'grid grid-cols-2',
-        'border-t-2 border-[#2D7B6F]',
+        'rounded-2xl overflow-hidden shadow-[0_12px_30px_rgba(0,0,0,0.25)] border border-[#1A473F]/20 backdrop-blur-md',
         'transition-transform duration-500 ease-out',
-        visible ? 'translate-y-0' : 'translate-y-full'
+        visible ? 'translate-y-0 scale-100' : 'translate-y-full scale-95 opacity-0'
       )}
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
@@ -34,20 +34,20 @@ export default function FloatingCta() {
       <a
         href={`tel:${SITE_CONFIG.phone.primary.replace(/-/g, '')}`}
         aria-label={`긴급전화 ${SITE_CONFIG.phone.primary}`}
-        className="relative flex items-center justify-center gap-2.5 bg-[#2D7B6F] active:bg-[#1E5C52] text-white py-4 overflow-hidden"
+        className="relative flex items-center justify-center gap-2.5 bg-[#1A473F] active:bg-[#12322C] text-white py-4.5 overflow-hidden transition-colors"
       >
         {/* 펄스 링 애니메이션 */}
-        <span className="absolute left-1/4 top-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-none">
-          <span className="block w-10 h-10 rounded-full bg-white/15 animate-ping" />
+        <span className="absolute left-[20%] top-1/2 -translate-y-1/2 -translate-x-1/2 pointer-events-none">
+          <span className="block w-12 h-12 rounded-full bg-white/20 animate-ping" />
         </span>
 
-        <div className="relative z-10 flex items-center gap-2.5">
-          <div className="relative flex-shrink-0">
-            <Phone className="w-5 h-5" />
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="relative flex-shrink-0 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm">
+            <Phone className="w-4 h-4" />
           </div>
           <div className="text-left">
-            <p className="text-[11px] leading-none mb-1 opacity-80">24시간 긴급전화</p>
-            <p className="text-sm font-bold leading-none tracking-wide">
+            <p className="text-[10px] uppercase tracking-widest leading-none mb-1 opacity-80 font-bold">24H Emergency</p>
+            <p className="text-[15px] font-black leading-none tracking-tight">
               {SITE_CONFIG.phone.primary}
             </p>
           </div>
@@ -60,15 +60,17 @@ export default function FloatingCta() {
         target={SITE_CONFIG.kakaoChannelUrl ? '_blank' : undefined}
         rel={SITE_CONFIG.kakaoChannelUrl ? 'noopener noreferrer' : undefined}
         aria-label={SITE_CONFIG.kakaoChannelUrl ? '카카오톡 상담 신청' : '온라인 상담 신청'}
-        className="flex items-center justify-center gap-2.5 bg-[#FEE500] active:bg-[#FDD800] text-[#1A1A1A] py-4"
+        className="flex items-center justify-center gap-3 bg-[#FCDA00] hover:bg-[#F5D500] active:bg-[#EBCB00] text-[#1A1A1A] py-4.5 transition-colors"
       >
-        <MessageCircle className="w-5 h-5 flex-shrink-0" />
+        <div className="w-8 h-8 rounded-full bg-[#1A1A1A]/5 flex items-center justify-center flex-shrink-0">
+          <MessageCircle className="w-4 h-4" />
+        </div>
         <div className="text-left">
-          <p className="text-[11px] leading-none mb-1 opacity-60">
+          <p className="text-[10px] font-bold tracking-wide leading-none mb-1 opacity-70">
             {SITE_CONFIG.kakaoChannelUrl ? '채팅 상담' : '온라인 상담'}
           </p>
-          <p className="text-sm font-bold leading-none">
-            {SITE_CONFIG.kakaoChannelUrl ? '카카오 상담' : '상담 신청'}
+          <p className="text-[15px] font-black leading-none tracking-tight">
+            {SITE_CONFIG.kakaoChannelUrl ? '카카오 상담' : '상담 접수'}
           </p>
         </div>
       </a>

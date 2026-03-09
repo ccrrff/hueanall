@@ -1,4 +1,4 @@
-import { Users, Star } from 'lucide-react'
+import { RiTeamLine as Users, RiStarFill as Star } from '@remixicon/react'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 
 export default async function AdminDashboardPage() {
@@ -24,7 +24,7 @@ export default async function AdminDashboardPage() {
   }
 
   const stats = [
-    { label: '활동 중인 지도사', value: directorsCount, icon: Users, color: 'bg-[#2D7B6F]' },
+    { label: '활동 중인 지도사', value: directorsCount, icon: Users, color: 'bg-[#1A473F]' },
     { label: '승인 대기 후기', value: pendingReviews, icon: Star, color: 'bg-purple-500' },
   ]
 

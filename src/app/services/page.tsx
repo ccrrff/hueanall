@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { CheckCircle2 } from 'lucide-react'
+import { RiCheckboxCircleLine as CheckCircle2 } from '@remixicon/react'
 
 export const metadata: Metadata = {
   title: '장례 서비스 | 휴앤올',
@@ -78,81 +78,81 @@ export default function ServicesPage() {
   return (
     <>
       {/* 헤더 */}
-      <section className="relative py-24 overflow-hidden">
+      <section className="relative py-28 overflow-hidden bg-[#FAFAFA]">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/services/service_page_hero.png"
             alt="장례 서비스 배경"
             fill
-            className="object-cover opacity-60"
+            className="object-cover opacity-50"
             priority
           />
-          <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-white/90 backdrop-blur-[1px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <span className="text-sm font-bold uppercase tracking-widest text-[#2D7B6F] bg-white/80 px-4 py-1.5 rounded-full inline-block mb-6 shadow-sm">
-            Services
+          <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-[#1A473F] bg-white/90 backdrop-blur-sm px-5 py-2 rounded-full inline-block mb-6 shadow-sm border border-[#1A473F]/10">
+            Premium Services
           </span>
-          <h1 className="text-4xl font-black text-gray-900 sm:text-5xl tracking-tight mb-6">장례 서비스</h1>
-          <p className="text-lg text-gray-700 sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-            모든 서비스는 후불제로 진행됩니다.<br className="hidden sm:block" /> 비용 걱정 없이 편안하게 연락주세요.
+          <h1 className="text-4xl font-black text-[#1A1A1A] sm:text-5xl tracking-tight mb-6">장례 서비스</h1>
+          <p className="text-lg text-[#444444] sm:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+            모든 서비스는 투명한 후불제로 진행됩니다.<br className="hidden sm:block" /> 비용 걱정 없이 오직 고인과의 이별에만 집중하세요.
           </p>
         </div>
       </section>
 
       {/* 서비스 카드 */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section className="mx-auto max-w-6xl px-4 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {SERVICES.map((service) => (
             <div
               key={service.title}
-              className={`flex flex-col rounded-2xl overflow-hidden border ${service.highlight
-                ? 'bg-[#2D7B6F] text-white border-[#2D7B6F]'
-                : 'bg-white border-[#E5E7EB] hover:border-[#2D7B6F] hover:shadow-xl'
+              className={`flex flex-col rounded-[2rem] overflow-hidden border shadow-sm ${service.highlight
+                ? 'bg-gradient-to-br from-[#1A473F] to-[#12322C] text-white border-[#12322C]'
+                : 'bg-white border-[#E6EFEF] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)]'
                 } transition-all duration-500 group`}
             >
-              <div className="relative w-full aspect-[16/9] overflow-hidden">
+              <div className="relative w-full aspect-[16/9] overflow-hidden bg-black">
                 <Image
                   src={service.image}
                   alt={service.title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                <div className={`absolute inset-0 ${service.highlight ? 'bg-[#2D7B6F]/20' : 'bg-black/5'} group-hover:bg-transparent transition-colors duration-500`} />
+                <div className={`absolute inset-0 ${service.highlight ? 'bg-gradient-to-t from-[#1A473F]/60 to-transparent' : 'bg-gradient-to-t from-black/40 to-transparent'} opacity-60 group-hover:opacity-40 transition-opacity duration-500`} />
               </div>
-              <div className="p-8 flex-1 flex flex-col">
+              <div className="p-8 sm:p-10 flex-1 flex flex-col">
                 <div>
                   <span
-                    className={`text-xs font-bold px-3 py-1 rounded-full inline-block mb-4 shadow-sm ${service.highlight
-                      ? 'bg-white/20 text-white backdrop-blur-sm'
-                      : 'bg-[#F0F9F7] text-[#2D7B6F]'
+                    className={`text-[12px] font-bold px-3.5 py-1.5 rounded-full inline-block mb-5 shadow-sm tracking-wide ${service.highlight
+                      ? 'bg-white/20 text-white backdrop-blur-md border border-white/10'
+                      : 'bg-[#F4F8F7] text-[#1A473F] border border-[#E6EFEF]'
                       }`}
                   >
                     {service.badge}
                   </span>
                   <h2
-                    className={`text-2xl font-bold mb-3 tracking-tight ${service.highlight ? 'text-white' : 'text-[#1A1A1A]'
+                    className={`text-2xl sm:text-3xl font-black mb-4 tracking-tight ${service.highlight ? 'text-white' : 'text-[#1A1A1A]'
                       }`}
                   >
                     {service.title}
                   </h2>
                   <p
-                    className={`text-base leading-relaxed mb-8 font-medium ${service.highlight ? 'text-white/90' : 'text-[#666666]'
+                    className={`text-base leading-relaxed mb-10 font-medium ${service.highlight ? 'text-white/80' : 'text-[#666666]'
                       }`}
                   >
                     {service.desc}
                   </p>
                 </div>
-                <ul className="space-y-3.5 mt-auto bg-white/5 rounded-xl p-4">
+                <ul className="space-y-4 mt-auto bg-black/5 rounded-2xl p-5 border border-black/5">
                   {service.features.map((f) => (
-                    <li key={f} className="flex items-center gap-3">
+                    <li key={f} className="flex items-center gap-3.5">
                       <CheckCircle2
-                        className={`w-5 h-5 flex-shrink-0 ${service.highlight ? 'text-white/90' : 'text-[#2D7B6F]'
+                        className={`w-5 h-5 flex-shrink-0 ${service.highlight ? 'text-[#3A9B8C]' : 'text-[#1A473F]'
                           }`}
                       />
                       <span
-                        className={`text-sm font-medium ${service.highlight ? 'text-white' : 'text-[#444444]'
+                        className={`text-[15px] font-semibold tracking-wide ${service.highlight ? 'text-white/90' : 'text-[#444444]'
                           }`}
                       >
                         {f}
@@ -173,7 +173,7 @@ export default function ServicesPage() {
           </p>
           <Link
             href="/consultation"
-            className="inline-flex items-center gap-2 bg-[#2D7B6F] text-white px-8 py-3.5 rounded-full font-bold hover:bg-[#1E5C52] transition-colors shadow-lg"
+            className="inline-flex items-center gap-2 bg-[#1A473F] text-white px-8 py-3.5 rounded-full font-bold hover:bg-[#12322C] transition-colors shadow-lg"
           >
             무료 상담 신청하기
           </Link>

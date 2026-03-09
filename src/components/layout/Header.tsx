@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Menu, Phone, X } from 'lucide-react'
+import { RiMenuLine as Menu, RiPhoneLine as Phone, RiCloseLine as X } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
@@ -29,15 +29,15 @@ export default function Header() {
       )}
     >
       {/* 상단 공지 바 */}
-      <div className="bg-[#2D7B6F] text-white">
-        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between text-xs sm:text-sm">
-          <span className="opacity-90 truncate">
-            <span className="hidden sm:inline">전문 장례지도사가 처음부터 끝까지 함께합니다</span>
-            <span className="sm:hidden">24시간 장례 상담</span>
+      <div className="bg-[#1A473F] text-white">
+        <div className="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between text-[13px] font-medium">
+          <span className="opacity-95 truncate">
+            <span className="hidden sm:inline tracking-wide">전문 장례지도사가 처음부터 끝까지 함께합니다</span>
+            <span className="sm:hidden font-semibold">24시간 장례 상담 대기중</span>
           </span>
           <a
             href={`tel:${SITE_CONFIG.phone.primary.replace(/-/g, '')}`}
-            className="flex items-center gap-1.5 font-bold tracking-wide hover:opacity-80 transition-opacity flex-shrink-0 ml-3"
+            className="flex items-center gap-1.5 font-bold tracking-wider hover:opacity-80 transition-opacity flex-shrink-0 ml-3"
           >
             <Phone className="w-3.5 h-3.5" />
             {SITE_CONFIG.phone.primary}
@@ -49,21 +49,21 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
         {/* 로고 */}
         <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-          <div className="relative w-9 h-9 bg-white transition-colors rounded-lg flex items-center justify-center overflow-hidden">
-            <Image src="/images/logo.png" alt="휴앤올 로고" fill className="object-contain" />
+          <div className="relative w-10 h-10 bg-[#F4F8F7] transition-colors rounded-xl flex items-center justify-center overflow-hidden">
+            <Image src="/images/logo.png" alt="휴앤올 로고" fill className="object-contain p-1" />
           </div>
           <div>
-            <span className="text-xl font-black text-[#1A1A1A] leading-tight block">
+            <span className="text-2xl font-black tracking-tight text-[#1A1A1A] leading-tight block">
               휴앤올
             </span>
-            <span className="text-[10px] text-[#2D7B6F] font-medium leading-tight hidden sm:block tracking-wide">
-              후불제 장례서비스
+            <span className="text-[11px] text-[#1A473F] font-bold leading-tight hidden sm:block tracking-widest uppercase">
+              Premium Funeral
             </span>
           </div>
         </Link>
 
         {/* 데스크톱 네비게이션 */}
-        <nav className="hidden lg:flex items-center" aria-label="주 네비게이션">
+        <nav className="hidden lg:flex items-center gap-1" aria-label="주 네비게이션">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href
             return (
@@ -71,12 +71,10 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'relative px-4 py-3 text-base font-medium transition-colors duration-150',
-                  'after:absolute after:bottom-0 after:left-4 after:right-4 after:h-0.5 after:rounded-full',
-                  'after:transition-all after:duration-200',
+                  'relative px-5 py-3 text-[15px] font-bold transition-colors duration-200 rounded-full',
                   isActive
-                    ? 'text-[#2D7B6F] after:bg-[#2D7B6F]'
-                    : 'text-[#1A1A1A] hover:text-[#2D7B6F] after:bg-transparent hover:after:bg-[#3A9B8C]/50'
+                    ? 'text-[#1A473F] bg-[#F4F8F7]'
+                    : 'text-[#444444] hover:text-[#1A473F] hover:bg-[#F4F8F7]/50'
                 )}
               >
                 {item.label}
@@ -88,9 +86,9 @@ export default function Header() {
         {/* 데스크톱 CTA */}
         <Button
           asChild
-          className="hidden lg:flex bg-[#2D7B6F] hover:bg-[#1E5C52] text-white rounded-full px-5 font-bold shadow-md hover:shadow-lg transition-all"
+          className="hidden lg:flex bg-[#1A473F] hover:bg-[#12322C] text-white rounded-full px-6 h-11 text-[15px] font-bold shadow-[0_4px_10px_-2px_rgba(26,71,63,0.3)] hover:shadow-[0_6px_14px_-4px_rgba(26,71,63,0.4)] transition-all"
         >
-          <Link href="/consultation">24시간 상담신청</Link>
+          <Link href="/consultation">24시간 상담접수</Link>
         </Button>
 
         {/* 모바일 햄버거 */}
@@ -99,31 +97,31 @@ export default function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="w-11 h-11"
+              className="w-11 h-11 text-[#1A1A1A]"
               aria-label="메뉴 열기"
             >
               <Menu className="w-6 h-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" showCloseButton={false} className="w-[80vw] max-w-[320px] p-0 gap-0 bg-white">
+          <SheetContent side="right" showCloseButton={false} className="w-[85vw] max-w-[340px] p-0 gap-0 bg-white rounded-l-3xl overflow-hidden shadow-2xl border-0">
             <SheetTitle className="sr-only">메뉴</SheetTitle>
             <div className="flex flex-col h-full">
               {/* 모바일 헤더 */}
-              <div className="bg-[#2D7B6F] text-white p-4 flex items-center justify-between flex-shrink-0">
-                <div className="flex items-center gap-2">
-                  <div className="relative w-8 h-8 bg-white rounded-lg flex items-center justify-center overflow-hidden">
-                    <Image src="/images/logo.png" alt="휴앤올 로고" fill className="object-contain" />
+              <div className="bg-[#1A473F] text-white p-5 flex items-center justify-between flex-shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="relative w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden">
+                    <Image src="/images/logo.png" alt="휴앤올 로고" fill className="object-contain p-1" />
                   </div>
                   <div>
-                    <p className="font-bold leading-tight">휴앤올</p>
-                    <p className="text-[10px] opacity-80">후불제 장례서비스</p>
+                    <p className="font-black text-lg leading-tight tracking-tight">휴앤올</p>
+                    <p className="text-[11px] font-bold text-white/80 tracking-widest uppercase mt-0.5">Premium Funeral</p>
                   </div>
                 </div>
                 <SheetClose asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-white hover:bg-white/10 hover:text-white w-10 h-10"
+                    className="text-white hover:bg-white/20 hover:text-white w-10 h-10 rounded-full transition-colors"
                   >
                     <X className="w-5 h-5" />
                   </Button>
@@ -133,27 +131,27 @@ export default function Header() {
               {/* 전화번호 배너 */}
               <a
                 href={`tel:${SITE_CONFIG.phone.primary.replace(/-/g, '')}`}
-                className="flex items-center gap-3 bg-[#F0F9F7] border-b border-[#D1EDE9] px-4 py-3 hover:bg-[#D1EDE9] transition-colors flex-shrink-0"
+                className="flex items-center gap-3 bg-[#F4F8F7] border-b border-[#E6EFEF] px-5 py-4 hover:bg-[#E6EFEF] transition-colors flex-shrink-0"
               >
-                <div className="w-9 h-9 bg-[#2D7B6F] rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-[#1A473F] rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
                   <Phone className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-xs text-[#2D7B6F] font-medium">24시간 긴급 상담</p>
-                  <p className="font-bold text-[#1A1A1A] text-base leading-tight">
+                  <p className="text-[11px] text-[#1A473F] font-bold mb-0.5 tracking-wide">24시간 긴급 상담</p>
+                  <p className="font-black tracking-tight text-[#1A1A1A] text-lg leading-tight">
                     {SITE_CONFIG.phone.primary}
                   </p>
                 </div>
                 <div className="ml-auto">
-                  <span className="inline-flex items-center gap-1 bg-[#2D7B6F] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  <span className="inline-flex items-center gap-1.5 bg-[#1A473F] text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#3A9B8C] animate-pulse" />
                     상담중
                   </span>
                 </div>
               </a>
 
               {/* 네비게이션 */}
-              <nav className="flex-1 overflow-y-auto py-2" aria-label="모바일 네비게이션">
+              <nav className="flex-1 overflow-y-auto py-3 px-2" aria-label="모바일 네비게이션">
                 {NAV_ITEMS.map((item) => {
                   const isActive = pathname === item.href
                   return (
@@ -161,16 +159,15 @@ export default function Header() {
                       <Link
                         href={item.href}
                         className={cn(
-                          'flex items-center justify-between px-5 py-4 text-base font-medium',
-                          'border-b border-[#F3F4F6] transition-colors min-h-[56px]',
+                          'flex items-center justify-between px-4 py-4 my-1 text-[15px] font-bold rounded-xl transition-all',
                           isActive
-                            ? 'text-[#2D7B6F] bg-[#F0F9F7]'
-                            : 'text-[#1A1A1A] hover:text-[#2D7B6F] hover:bg-[#F0F9F7] active:bg-[#D1EDE9]'
+                            ? 'text-[#1A473F] bg-[#F4F8F7]'
+                            : 'text-[#444444] hover:text-[#1A473F] hover:bg-[#F4F8F7]'
                         )}
                       >
                         <span>{item.label}</span>
                         {isActive && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#2D7B6F] flex-shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#1A473F] flex-shrink-0" />
                         )}
                       </Link>
                     </SheetClose>
@@ -179,13 +176,13 @@ export default function Header() {
               </nav>
 
               {/* 하단 CTA */}
-              <div className="p-4 border-t bg-[#F8F9FA] flex-shrink-0">
+              <div className="p-5 border-t border-[#E5E7EB] bg-[#FAFAFA] flex-shrink-0">
                 <SheetClose asChild>
                   <Button
                     asChild
-                    className="w-full bg-[#2D7B6F] hover:bg-[#1E5C52] text-white h-12 text-base font-bold rounded-lg"
+                    className="w-full bg-[#1A473F] hover:bg-[#12322C] text-white h-14 text-[15px] font-bold rounded-xl shadow-[0_4px_10px_-2px_rgba(26,71,63,0.3)] transition-all"
                   >
-                    <Link href="/consultation">상담 신청하기</Link>
+                    <Link href="/consultation">온라인 24시간 상담신청</Link>
                   </Button>
                 </SheetClose>
               </div>

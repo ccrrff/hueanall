@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { PlusCircle, Pencil, User } from 'lucide-react'
+import { RiAddCircleLine as PlusCircle, RiPencilLine as Pencil, RiUserLine as User } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 import type { Director } from '@/types/database'
@@ -33,7 +33,7 @@ export default async function AdminDirectorsPage() {
           <h1 className="text-2xl font-black text-[#1A1A1A]">장례지도사 관리</h1>
           <p className="text-sm text-[#666666] mt-1">총 {directors.length}명</p>
         </div>
-        <Button asChild className="bg-[#2D7B6F] hover:bg-[#1E5C52] text-white rounded-full gap-2">
+        <Button asChild className="bg-[#1A473F] hover:bg-[#12322C] text-white rounded-full gap-2">
           <Link href="/admin/directors/new"><PlusCircle className="w-4 h-4" /> 새 지도사 등록</Link>
         </Button>
       </div>
@@ -45,7 +45,7 @@ export default async function AdminDirectorsPage() {
           </div>
           <p className="text-[#666666] font-medium mb-1">등록된 지도사가 없습니다</p>
           <p className="text-sm text-[#9CA3AF] mb-4">새 지도사를 등록해보세요</p>
-          <Button asChild className="bg-[#2D7B6F] hover:bg-[#1E5C52] text-white rounded-full gap-2">
+          <Button asChild className="bg-[#1A473F] hover:bg-[#12322C] text-white rounded-full gap-2">
             <Link href="/admin/directors/new"><PlusCircle className="w-4 h-4" /> 등록하기</Link>
           </Button>
         </div>

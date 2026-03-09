@@ -45,38 +45,40 @@ export default function FaqPage() {
   return (
     <>
       {/* 헤더 */}
-      <section className="bg-gradient-to-b from-[#F0F9F7] to-white py-16">
+      <section className="bg-gradient-to-b from-[#F4F8F7] to-white py-20">
         <div className="mx-auto max-w-4xl px-4 text-center">
-          <span className="text-sm font-semibold uppercase tracking-wider text-[#2D7B6F]">
+          <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-[#1A473F] bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full inline-block mb-4 shadow-sm border border-[#1A473F]/10">
             FAQ
           </span>
-          <h1 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">자주 묻는 질문</h1>
-          <p className="mt-4 text-base text-gray-600 sm:text-lg">
-            궁금한 점이 있으시면 언제든지 문의해 주세요
+          <h1 className="mt-2 text-3xl font-black text-[#1A1A1A] sm:text-4xl tracking-tight">자주 묻는 질문</h1>
+          <p className="mt-4 text-base text-[#444444] font-medium sm:text-lg">
+            서비스 이용에 관련해 궁금하셨던 점을 확인해 보세요
           </p>
         </div>
       </section>
 
       {/* FAQ 목록 */}
-      <section className="mx-auto max-w-3xl px-4 py-12">
-        <div className="space-y-4">
+      <section className="mx-auto max-w-3xl px-4 py-16">
+        <div className="space-y-5">
           {FAQS.map((faq, i) => (
             <details
               key={i}
-              className="group bg-white border border-[#E5E7EB] rounded-2xl overflow-hidden"
+              className="group bg-white border border-[#E6EFEF] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
-              <summary className="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-[#F8F9FA] transition-colors">
-                <span className="font-semibold text-[#1A1A1A] pr-4">
-                  <span className="text-[#2D7B6F] font-bold mr-2">Q.</span>
+              <summary className="flex items-center justify-between p-7 cursor-pointer list-none hover:bg-[#F4F8F7]/50 transition-colors">
+                <span className="font-bold text-[#1A1A1A] pr-4 text-[15px] tracking-tight">
+                  <span className="text-[#1A473F] font-black mr-2.5">Q.</span>
                   {faq.q}
                 </span>
-                <span className="w-6 h-6 flex-shrink-0 text-[#2D7B6F] transition-transform group-open:rotate-45 text-xl leading-none">
-                  +
-                </span>
+                <div className="w-8 h-8 rounded-full bg-[#FAFAFA] border border-[#E6EFEF] flex items-center justify-center flex-shrink-0 group-open:bg-[#1A473F] group-open:border-[#1A473F] group-open:rotate-180 transition-all duration-300">
+                  <span className="w-3 h-0.5 bg-[#444444] group-open:bg-white relative">
+                    <span className="absolute w-3 h-0.5 bg-[#444444] group-open:bg-white inset-0 rotate-90 group-open:rotate-0 transition-transform duration-300"></span>
+                  </span>
+                </div>
               </summary>
-              <div className="px-6 pb-6">
-                <p className="text-[#444444] leading-relaxed text-sm border-t border-[#F3F4F6] pt-4">
-                  <span className="text-[#2D7B6F] font-bold mr-2">A.</span>
+              <div className="px-7 pb-7">
+                <p className="text-[#444444] leading-relaxed text-[15px] font-medium border-t border-[#E6EFEF] pt-6 flex items-start">
+                  <span className="text-[#1A473F] font-black mr-3 flex-shrink-0">A.</span>
                   {faq.a}
                 </p>
               </div>
@@ -85,16 +87,17 @@ export default function FaqPage() {
         </div>
 
         {/* 하단 CTA */}
-        <div className="mt-12 text-center bg-[#F8F9FA] rounded-2xl p-8 border border-[#E5E7EB]">
-          <h2 className="text-lg font-bold text-[#1A1A1A] mb-2">원하는 답변을 찾지 못하셨나요?</h2>
-          <p className="text-[#666666] text-sm mb-5">
-            전문 장례지도사가 직접 답변드립니다.
+        <div className="mt-16 text-center bg-[#F4F8F7] rounded-[2rem] p-10 border border-[#E6EFEF] relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/60 to-transparent rounded-bl-full -z-10" />
+          <h2 className="text-xl font-black text-[#1A1A1A] mb-3 tracking-tight">원하는 답변을 찾지 못하셨나요?</h2>
+          <p className="text-[#666666] text-[15px] font-medium mb-8">
+            전문 장례지도사가 신속하고 정확하게 직접 답변해 드립니다.
           </p>
           <Link
             href="/consultation"
-            className="inline-flex items-center gap-2 bg-[#2D7B6F] text-white px-7 py-3 rounded-full font-bold hover:bg-[#1E5C52] transition-colors"
+            className="inline-flex items-center gap-2 bg-[#1A473F] text-white px-8 py-3.5 rounded-full font-bold hover:bg-[#12322C] transition-all shadow-[0_4px_10px_-2px_rgba(26,71,63,0.3)] hover:shadow-[0_6px_14px_-4px_rgba(26,71,63,0.4)]"
           >
-            무료 상담 신청
+            1:1 무료 상담 신청
           </Link>
         </div>
       </section>

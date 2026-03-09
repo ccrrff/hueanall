@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Eye, EyeOff, Lock } from 'lucide-react'
+import { RiEyeLine as Eye, RiEyeOffLine as EyeOff, RiLockPasswordLine as Lock } from '@remixicon/react'
 
 function LoginForm() {
   const [adminId, setAdminId] = useState('')
@@ -43,7 +43,7 @@ function LoginForm() {
   return (
     <>
       <div className="text-center mb-8">
-        <div className="w-14 h-14 bg-[#2D7B6F] rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-14 h-14 bg-[#1A473F] rounded-2xl flex items-center justify-center mx-auto mb-4">
           <Lock className="w-6 h-6 text-white" />
         </div>
         <h1 className="text-2xl font-black text-[#1A1A1A]">관리자 로그인</h1>
@@ -89,7 +89,7 @@ function LoginForm() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full h-11 bg-[#2D7B6F] hover:bg-[#1E5C52] text-white font-bold"
+          className="w-full h-11 bg-[#1A473F] hover:bg-[#12322C] text-white font-bold"
         >
           {loading ? '로그인 중...' : '로그인'}
         </Button>

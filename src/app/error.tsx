@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { AlertCircle } from 'lucide-react'
+import { RiErrorWarningLine as AlertCircle } from '@remixicon/react'
 
 export default function GlobalError({
   error,
@@ -29,10 +29,10 @@ export default function GlobalError({
         )}
       </p>
       <div className="flex gap-3">
-        <Button onClick={reset} variant="outline" className="border-[#2D7B6F] text-[#2D7B6F]">
+        <Button onClick={reset} variant="outline" className="border-[#1A473F] text-[#1A473F]">
           다시 시도
         </Button>
-        <Button asChild className="bg-[#2D7B6F] hover:bg-[#1E5C52] text-white">
+        <Button asChild className="bg-[#1A473F] hover:bg-[#12322C] text-white">
           <Link href="/">홈으로</Link>
         </Button>
       </div>

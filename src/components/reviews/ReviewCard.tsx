@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Star } from 'lucide-react'
+import { RiStarFill as Star } from '@remixicon/react'
 
 interface ReviewCardProps {
   review: {
@@ -88,7 +88,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
           {review.customer_name}
         </p>
         {review.directors?.name && (
-          <p className="text-xs text-[#2D7B6F] mt-0.5">
+          <p className="text-xs text-[#1A473F] mt-0.5">
             담당 지도사: {review.directors.name}
           </p>
         )}

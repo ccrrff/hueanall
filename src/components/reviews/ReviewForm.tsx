@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { Star, Upload, X, CheckCircle2, Send, ImageIcon } from 'lucide-react'
+import { RiStarFill as Star, RiUploadCloud2Line as Upload, RiCloseLine as X, RiCheckboxCircleLine as CheckCircle2, RiSendPlaneLine as Send, RiImageLine as ImageIcon } from '@remixicon/react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -240,7 +240,7 @@ export default function ReviewForm() {
   if (submitted) {
     return (
       <div className="max-w-2xl mx-auto text-center py-16 px-4">
-        <CheckCircle2 className="w-16 h-16 text-[#2D7B6F] mx-auto mb-4" />
+        <CheckCircle2 className="w-16 h-16 text-[#1A473F] mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
           후기가 접수되었습니다
         </h3>
@@ -248,7 +248,7 @@ export default function ReviewForm() {
         <Button
           onClick={handleReset}
           variant="outline"
-          className="border-[#2D7B6F] text-[#2D7B6F] hover:bg-[#2D7B6F]/5"
+          className="border-[#1A473F] text-[#1A473F] hover:bg-[#1A473F]/5"
         >
           다른 후기 작성하기
         </Button>
@@ -381,8 +381,8 @@ export default function ReviewForm() {
           className={cn(
             'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors',
             isDragOver
-              ? 'border-[#2D7B6F] bg-[#2D7B6F]/5'
-              : 'border-[#E5E7EB] hover:border-[#2D7B6F]'
+              ? 'border-[#1A473F] bg-[#1A473F]/5'
+              : 'border-[#E5E7EB] hover:border-[#1A473F]'
           )}
         >
           <ImageIcon className="w-10 h-10 text-gray-400 mx-auto mb-2" />
@@ -426,7 +426,7 @@ export default function ReviewForm() {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full h-12 bg-[#2D7B6F] hover:bg-[#1E5C52] text-white disabled:opacity-50"
+        className="w-full h-12 bg-[#1A473F] hover:bg-[#12322C] text-white disabled:opacity-50"
       >
         {isUploading ? (
           <>

@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Users, Star, LogOut } from 'lucide-react'
+import { RiDashboardLine as LayoutDashboard, RiTeamLine as Users, RiStarFill as Star, RiLogoutBoxRLine as LogOut } from '@remixicon/react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 
@@ -36,7 +36,7 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
       {/* Logo */}
       <div className="px-6 py-5 border-b border-white/10">
         <p className="text-xs text-white/50 uppercase tracking-widest mb-1">관리자</p>
-        <p className="text-lg font-black text-[#2D7B6F]">휴앤올</p>
+        <p className="text-lg font-black text-[#1A473F]">휴앤올</p>
       </div>
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1">
@@ -46,7 +46,7 @@ export default function AdminSidebar({ email }: AdminSidebarProps) {
             <Link key={href} href={href}
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                isActive ? 'bg-[#2D7B6F] text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
+                isActive ? 'bg-[#1A473F] text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
               )}
             >
               <Icon className="w-4 h-4 flex-shrink-0" />

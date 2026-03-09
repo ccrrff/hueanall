@@ -53,7 +53,7 @@ export default function SectionNav({ sections }: SectionNavProps) {
 
   return (
     <nav
-      className="hidden lg:flex fixed left-6 top-1/2 -translate-y-1/2 z-30 flex-col items-center gap-0"
+      className="hidden lg:flex fixed left-6 top-[55%] -translate-y-1/2 z-[60] flex-col items-center gap-0"
       aria-label="섹션 네비게이션"
     >
       {sections.map((section, index) => {
@@ -68,7 +68,7 @@ export default function SectionNav({ sections }: SectionNavProps) {
               <div
                 className={cn(
                   'w-px h-6 transition-colors duration-300',
-                  isActive ? 'bg-[#2D7B6F]' : 'bg-[#D1D5DB]'
+                  isActive ? 'bg-[#1A473F]' : 'bg-[#D1D5DB]'
                 )}
               />
             )}
@@ -89,7 +89,7 @@ export default function SectionNav({ sections }: SectionNavProps) {
                 className={cn(
                   'relative z-10 rounded-full transition-all duration-300 flex-shrink-0',
                   isActive
-                    ? 'w-4 h-4 bg-[#2D7B6F] ring-2 ring-[#2D7B6F]/30 ring-offset-2'
+                    ? 'w-4 h-4 bg-[#1A473F] ring-2 ring-[#1A473F]/30 ring-offset-2'
                     : 'w-2.5 h-2.5 bg-[#D1D5DB] hover:bg-[#3A9B8C] hover:scale-125'
                 )}
                 aria-label={`${section.label} 섹션으로 이동`}
@@ -102,7 +102,7 @@ export default function SectionNav({ sections }: SectionNavProps) {
               <div
                 className={cn(
                   'w-px h-6 transition-colors duration-300',
-                  isActive ? 'bg-[#2D7B6F]' : 'bg-[#D1D5DB]'
+                  isActive ? 'bg-[#1A473F]' : 'bg-[#D1D5DB]'
                 )}
               />
             )}

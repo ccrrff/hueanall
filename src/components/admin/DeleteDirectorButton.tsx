@@ -1,7 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
-import { Trash2 } from 'lucide-react'
+import { RiDeleteBin6Line as Trash2 } from '@remixicon/react'
 import { toast } from 'sonner'
 import { deleteDirector } from '@/app/admin/directors/actions'
 

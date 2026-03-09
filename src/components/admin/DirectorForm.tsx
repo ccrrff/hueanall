@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Camera, X, Loader2 } from 'lucide-react'
+import { RiCameraLine as Camera, RiCloseLine as X, RiLoader4Line as Loader2 } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import type { Director } from '@/types/database'
 
@@ -151,7 +151,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
     }
   }
 
-  const inputClass = 'w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent'
+  const inputClass = 'w-full rounded-lg border border-[#D1D5DB] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1A473F] focus:border-transparent'
 
   return (
     <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-8">
@@ -203,7 +203,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="text-sm font-medium text-[#2D7B6F] hover:text-[#1E5C52] hover:underline"
+                className="text-sm font-medium text-[#1A473F] hover:text-[#12322C] hover:underline"
               >
                 {photoPreview ? '사진 변경' : '사진 선택'}
               </button>
@@ -345,7 +345,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
             name="is_active"
             type="checkbox"
             defaultChecked={director?.is_active ?? true}
-            className="rounded border-[#D1D5DB] text-[#2D7B6F] focus:ring-[#2D7B6F]"
+            className="rounded border-[#D1D5DB] text-[#1A473F] focus:ring-[#1A473F]"
           />
           <label htmlFor="is_active" className="text-sm text-[#333333]">활성 상태</label>
         </div>
@@ -355,7 +355,7 @@ export default function DirectorForm({ director, mode }: DirectorFormProps) {
           <Button
             type="submit"
             disabled={loading}
-            className="bg-[#2D7B6F] hover:bg-[#1E5C52] text-white rounded-full px-6 min-w-[120px]"
+            className="bg-[#1A473F] hover:bg-[#12322C] text-white rounded-full px-6 min-w-[120px]"
           >
             {loading ? (
               <span className="flex items-center gap-2">

@@ -29,7 +29,7 @@ export default function DirectorSortInput({ id, defaultOrder }: { id: string; de
       onBlur={handleBlur}
       onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
       disabled={saving}
-      className="w-14 rounded border border-[#E5E7EB] px-2 py-1 text-center text-sm focus:outline-none focus:ring-2 focus:ring-[#2D7B6F] focus:border-transparent disabled:opacity-50"
+      className="w-14 rounded border border-[#E5E7EB] px-2 py-1 text-center text-sm focus:outline-none focus:ring-2 focus:ring-[#1A473F] focus:border-transparent disabled:opacity-50"
     />
   )
 }

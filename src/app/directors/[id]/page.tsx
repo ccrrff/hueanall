@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
 import DirectorConsultForm from '@/components/directors/DirectorConsultForm'
-import { Star, Award, Phone, BadgeCheck } from 'lucide-react'
+import { RiStarFill as Star, RiAwardLine as Award, RiPhoneLine as Phone, RiShieldCheckFill as BadgeCheck } from '@remixicon/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Review } from '@/types/database'
@@ -80,13 +80,13 @@ export default async function DirectorDetailPage({
       <nav className="mb-8 text-sm text-[#999999]">
         <ol className="flex items-center gap-1.5">
           <li>
-            <Link href="/" className="hover:text-[#2D7B6F] transition-colors">
+            <Link href="/" className="hover:text-[#1A473F] transition-colors">
               홈
             </Link>
           </li>
           <li>&gt;</li>
           <li>
-            <Link href="/directors" className="hover:text-[#2D7B6F] transition-colors">
+            <Link href="/directors" className="hover:text-[#1A473F] transition-colors">
               장례지도사
             </Link>
           </li>
@@ -110,7 +110,7 @@ export default async function DirectorDetailPage({
                 priority
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center bg-[#2D7B6F] text-5xl font-black text-white">
+              <div className="flex h-full w-full items-center justify-center bg-[#1A473F] text-5xl font-black text-white">
                 {director.name.charAt(0)}
               </div>
             )}
@@ -120,13 +120,13 @@ export default async function DirectorDetailPage({
           <div className="flex-1 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
               <h1 className="text-3xl font-black text-[#1A1A1A]">{director.name}</h1>
-              <BadgeCheck className="w-6 h-6 text-[#2D7B6F]" />
+              <BadgeCheck className="w-6 h-6 text-[#1A473F]" />
             </div>
             <p className="text-[#666666]">
               {director.title}
               {director.position && ` · ${director.position}`}
             </p>
-            <div className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[#2D7B6F]">
+            <div className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-[#1A473F]">
               <Award className="w-4 h-4" />
               <span>경력 {director.years_experience}년</span>
             </div>
@@ -135,7 +135,7 @@ export default async function DirectorDetailPage({
               <div className="mt-3">
                 <a
                   href={`tel:${director.phone}`}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-[#F0F9F7] px-4 py-2 text-sm font-medium text-[#2D7B6F] transition-colors hover:bg-[#2D7B6F] hover:text-white"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#F4F8F7] px-4 py-2 text-sm font-medium text-[#1A473F] transition-colors hover:bg-[#1A473F] hover:text-white"
                 >
                   <Phone className="w-4 h-4" />
                   직통 전화
@@ -163,7 +163,7 @@ export default async function DirectorDetailPage({
               {director.specialties.map((s: string) => (
                 <span
                   key={s}
-                  className="rounded-full bg-[#F0F9F7] px-3 py-1.5 text-sm text-[#2D7B6F] font-medium"
+                  className="rounded-full bg-[#F4F8F7] px-3 py-1.5 text-sm text-[#1A473F] font-medium"
                 >
                   {s}
                 </span>

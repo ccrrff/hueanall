@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { CheckCircle2, Send, Phone, User, MessageSquare } from 'lucide-react'
+import { RiCheckboxCircleLine as CheckCircle2, RiSendPlaneLine as Send, RiPhoneLine as Phone, RiUserLine as User, RiMessage2Line as MessageSquare } from '@remixicon/react'
 
 const schema = z.object({
   customer_name: z.string().min(2, '이름은 2자 이상 입력해주세요'),
@@ -81,13 +81,13 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
   if (submitted) {
     return (
       <div className="flex flex-col items-center justify-center py-10 text-center gap-4">
-        <div className="w-16 h-16 bg-[#2D7B6F] rounded-full flex items-center justify-center">
+        <div className="w-16 h-16 bg-[#1A473F] rounded-full flex items-center justify-center">
           <CheckCircle2 className="w-8 h-8 text-white" />
         </div>
         <div>
           <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">지정 상담 신청이 완료되었습니다</h3>
           <p className="text-[#666666] leading-relaxed">
-            <span className="font-semibold text-[#2D7B6F]">{directorName}</span> 지도사가
+            <span className="font-semibold text-[#1A473F]">{directorName}</span> 지도사가
             <br />
             빠른 시간 내에 연락드리겠습니다.
           </p>
@@ -97,7 +97,7 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
             setSubmitted(false)
             reset()
           }}
-          className="text-sm text-[#2D7B6F] underline underline-offset-2"
+          className="text-sm text-[#1A473F] underline underline-offset-2"
         >
           다시 신청하기
         </button>
@@ -108,14 +108,14 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
   return (
     <div className="rounded-2xl border border-[#E5E7EB] bg-white p-6 sm:p-8 shadow-sm">
       <h3 className="text-lg font-bold text-[#1A1A1A] mb-6">
-        <span className="text-[#2D7B6F] font-black">{directorName}</span> 지도사 지정 상담 신청
+        <span className="text-[#1A473F] font-black">{directorName}</span> 지도사 지정 상담 신청
       </h3>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
         {/* 성함 */}
         <div className="space-y-1.5">
           <Label htmlFor="director-consult-name" className="text-sm font-medium text-[#1A1A1A] flex items-center gap-1.5">
-            <User className="w-4 h-4 text-[#2D7B6F]" />
+            <User className="w-4 h-4 text-[#1A473F]" />
             성함 <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -124,7 +124,7 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
             placeholder="홍길동"
             autoComplete="name"
             className={cn(
-              'h-12 text-base border-[#E5E7EB] focus-visible:ring-[#2D7B6F]',
+              'h-12 text-base border-[#E5E7EB] focus-visible:ring-[#1A473F]',
               errors.customer_name && 'border-red-400'
             )}
             {...register('customer_name')}
@@ -137,7 +137,7 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
         {/* 연락처 */}
         <div className="space-y-1.5">
           <Label htmlFor="director-consult-phone" className="text-sm font-medium text-[#1A1A1A] flex items-center gap-1.5">
-            <Phone className="w-4 h-4 text-[#2D7B6F]" />
+            <Phone className="w-4 h-4 text-[#1A473F]" />
             연락처 <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -146,7 +146,7 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
             placeholder="010-1234-5678"
             autoComplete="tel"
             className={cn(
-              'h-12 text-base border-[#E5E7EB] focus-visible:ring-[#2D7B6F]',
+              'h-12 text-base border-[#E5E7EB] focus-visible:ring-[#1A473F]',
               errors.customer_phone && 'border-red-400'
             )}
             {...register('customer_phone')}
@@ -159,7 +159,7 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
         {/* 메시지 */}
         <div className="space-y-1.5">
           <Label htmlFor="director-consult-message" className="text-sm font-medium text-[#1A1A1A] flex items-center gap-1.5">
-            <MessageSquare className="w-4 h-4 text-[#2D7B6F]" />
+            <MessageSquare className="w-4 h-4 text-[#1A473F]" />
             메시지 <span className="text-xs text-[#999999] font-normal">(선택)</span>
           </Label>
           <Textarea
@@ -167,7 +167,7 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
             placeholder="상담 내용이나 요청사항을 입력해주세요"
             rows={3}
             className={cn(
-              'text-base border-[#E5E7EB] focus-visible:ring-[#2D7B6F] resize-none',
+              'text-base border-[#E5E7EB] focus-visible:ring-[#1A473F] resize-none',
               errors.message && 'border-red-400'
             )}
             {...register('message')}
@@ -182,12 +182,12 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
           <label className="flex items-start gap-2.5 cursor-pointer">
             <input
               type="checkbox"
-              className="mt-0.5 w-4 h-4 rounded border-[#D1D5DB] accent-[#2D7B6F]"
+              className="mt-0.5 w-4 h-4 rounded border-[#D1D5DB] accent-[#1A473F]"
               {...register('privacy_agreed')}
             />
             <span className="text-sm text-[#666666] leading-relaxed">
               개인정보 수집 및 이용에 동의합니다.{' '}
-              <a href="/privacy" target="_blank" className="text-[#2D7B6F] underline underline-offset-2">
+              <a href="/privacy" target="_blank" className="text-[#1A473F] underline underline-offset-2">
                 내용 보기
               </a>
             </span>
@@ -201,7 +201,7 @@ export default function DirectorConsultForm({ directorId, directorName }: Direct
         <Button
           type="submit"
           disabled={isSubmitting || !privacyAgreed}
-          className="w-full h-12 bg-[#2D7B6F] hover:bg-[#1E5C52] text-white text-base font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="w-full h-12 bg-[#1A473F] hover:bg-[#12322C] text-white text-base font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           {isSubmitting ? (
             <span className="flex items-center gap-2">

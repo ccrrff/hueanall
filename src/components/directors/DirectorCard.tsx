@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Award, ArrowRight } from 'lucide-react'
+import { RiAwardLine as Award, RiArrowRightLine as ArrowRight } from '@remixicon/react'
 import type { Director } from '@/types/database'
 
 interface DirectorCardProps {
@@ -14,7 +14,7 @@ export default function DirectorCard({ director }: DirectorCardProps) {
   return (
     <Link
       href={`/directors/${director.id}`}
-      className="group block rounded-2xl border border-[#E5E7EB] bg-white p-6 transition-all hover:border-[#2D7B6F] hover:shadow-lg"
+      className="group block rounded-2xl border border-[#E5E7EB] bg-white p-6 transition-all hover:border-[#1A473F] hover:shadow-lg"
     >
       <div className="flex flex-col items-center text-center">
         {/* Avatar */}
@@ -28,7 +28,7 @@ export default function DirectorCard({ director }: DirectorCardProps) {
               sizes="96px"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-[#2D7B6F] text-3xl font-black text-white">
+            <div className="flex h-full w-full items-center justify-center bg-[#1A473F] text-3xl font-black text-white">
               {director.name.charAt(0)}
             </div>
           )}
@@ -42,7 +42,7 @@ export default function DirectorCard({ director }: DirectorCardProps) {
         </p>
 
         {/* Years experience */}
-        <div className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#2D7B6F]">
+        <div className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-[#1A473F]">
           <Award className="h-4 w-4" />
           <span>경력 {director.years_experience}년</span>
         </div>
@@ -53,7 +53,7 @@ export default function DirectorCard({ director }: DirectorCardProps) {
             {displaySpecialties.map((s) => (
               <span
                 key={s}
-                className="rounded-full bg-[#F0F9F7] px-2.5 py-1 text-xs text-[#2D7B6F]"
+                className="rounded-full bg-[#F4F8F7] px-2.5 py-1 text-xs text-[#1A473F]"
               >
                 {s}
               </span>
@@ -67,7 +67,7 @@ export default function DirectorCard({ director }: DirectorCardProps) {
         )}
 
         {/* CTA */}
-        <div className="mt-5 flex items-center gap-1 text-sm font-medium text-[#2D7B6F] opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="mt-5 flex items-center gap-1 text-sm font-medium text-[#1A473F] opacity-0 transition-opacity group-hover:opacity-100">
           프로필 보기
           <ArrowRight className="h-4 w-4" />
         </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Star, ArrowRight, Quote } from 'lucide-react'
+import { RiStarFill as Star, RiArrowRightLine as ArrowRight, RiDoubleQuotesL as Quote } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { isSupabaseConfigured } from '@/lib/supabase/config'
 
@@ -46,7 +46,7 @@ export default async function ReviewsPreview() {
     <section id="reviews" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-14">
-          <p className="text-[#2D7B6F] font-semibold text-sm uppercase tracking-widest mb-3">Reviews</p>
+          <p className="text-[#1A473F] font-semibold text-sm uppercase tracking-widest mb-3">Reviews</p>
           <h2 className="text-3xl sm:text-4xl font-black text-[#1A1A1A] mb-4">고객님들의 소중한 후기</h2>
           <p className="text-[#666666] text-lg max-w-xl mx-auto leading-relaxed">
             실제 서비스를 경험하신 고객님들의 이야기입니다
@@ -57,7 +57,7 @@ export default async function ReviewsPreview() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             {displayReviews.map((review) => (
               <div key={review.id} className="bg-[#F8F9FA] rounded-2xl p-6 border border-[#E5E7EB] flex flex-col">
-                <Quote className="w-8 h-8 text-[#2D7B6F]/30 mb-3 flex-shrink-0" />
+                <Quote className="w-8 h-8 text-[#1A473F]/30 mb-3 flex-shrink-0" />
                 <p className="text-[#444444] leading-relaxed mb-4 flex-1 text-sm">{review.content}</p>
                 <div className="border-t border-[#E5E7EB] pt-4">
                   <div className="flex items-center justify-between">
@@ -73,13 +73,13 @@ export default async function ReviewsPreview() {
           </div>
         ) : (
           <div className="text-center py-10 mb-10">
-            <Quote className="w-12 h-12 text-[#D1EDE9] mx-auto mb-4" />
+            <Quote className="w-12 h-12 text-[#E6EFEF] mx-auto mb-4" />
             <p className="text-[#999999]">아직 등록된 후기가 없습니다</p>
           </div>
         )}
 
         <div className="text-center">
-          <Button asChild variant="outline" className="border-[#2D7B6F] text-[#2D7B6F] hover:bg-[#F0F9F7] rounded-full px-8">
+          <Button asChild variant="outline" className="border-[#1A473F] text-[#1A473F] hover:bg-[#F4F8F7] rounded-full px-8">
             <Link href="/reviews" className="flex items-center gap-2">
               후기 더 보기
               <ArrowRight className="w-4 h-4" />

@@ -1,8 +1,7 @@
 import Link from 'next/link'
-import { Banknote, Building2, Clock, UserCheck } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { RiMoneyDollarCircleLine as Banknote, RiBuilding2Line as Building2, RiTimeLine as Clock, RiUserFollowLine as UserCheck } from '@remixicon/react'
 
-const services: { icon: LucideIcon; title: string; description: string; href: string }[] = [
+const services: { icon: React.ComponentType<any>; title: string; description: string; href: string }[] = [
   {
     icon: Banknote,
     title: '후불제 장례서비스',
@@ -34,7 +33,7 @@ export default function ServicesSection() {
     <section id="services" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-14">
-          <p className="text-[#2D7B6F] font-semibold text-sm uppercase tracking-widest mb-3">Our Services</p>
+          <p className="text-[#1A473F] font-semibold text-sm uppercase tracking-widest mb-3">Our Services</p>
           <h2 className="text-3xl sm:text-4xl font-black text-[#1A1A1A] mb-4">휴앤올의 장례서비스</h2>
           <p className="text-[#666666] text-lg max-w-xl mx-auto leading-relaxed">
             어렵고 낯선 상황에서 모든 것을 도와드립니다
@@ -48,14 +47,14 @@ export default function ServicesSection() {
               <Link
                 key={service.title}
                 href={service.href}
-                className="group flex flex-col p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#2D7B6F] hover:shadow-lg transition-all duration-300 bg-white"
+                className="group flex flex-col p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#1A473F] hover:shadow-lg transition-all duration-300 bg-white"
               >
-                <div className="w-16 h-16 rounded-xl bg-[#F0F9F7] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform shadow-sm">
-                  <Icon className="w-8 h-8 text-[#2D7B6F]" />
+                <div className="w-16 h-16 rounded-xl bg-[#F4F8F7] flex items-center justify-center mb-5 group-hover:scale-105 transition-transform shadow-sm">
+                  <Icon className="w-8 h-8 text-[#1A473F]" />
                 </div>
                 <h3 className="text-lg font-bold text-[#1A1A1A] mb-2 leading-tight">{service.title}</h3>
                 <p className="text-sm text-[#666666] leading-relaxed flex-1">{service.description}</p>
-                <div className="mt-4 text-[#2D7B6F] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="mt-4 text-[#1A473F] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   자세히 보기 →
                 </div>
               </Link>

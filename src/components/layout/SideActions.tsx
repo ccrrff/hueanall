@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Phone, MessageCircle, ArrowUp } from 'lucide-react'
+import { RiPhoneLine as Phone, RiMessage3Line as MessageCircle, RiArrowUpLine as ArrowUp } from '@remixicon/react'
 import { cn } from '@/lib/utils'
 import { SITE_CONFIG } from '@/lib/constants'
 
@@ -29,7 +29,7 @@ export default function SideActions() {
         </div>
         <a
           href={`tel:${SITE_CONFIG.phone.primary.replace(/-/g, '')}`}
-          className="w-12 h-12 rounded-full bg-[#2D7B6F] hover:bg-[#1E5C52] text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 active:scale-95"
+          className="w-12 h-12 rounded-full bg-[#1A473F] hover:bg-[#12322C] text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 active:scale-95"
           aria-label={`전화 상담 ${SITE_CONFIG.phone.primary}`}
         >
           <Phone className="w-5 h-5" />
@@ -70,7 +70,7 @@ export default function SideActions() {
         </div>
         <button
           onClick={scrollToTop}
-          className="w-12 h-12 rounded-full bg-white hover:bg-[#F0F9F7] border-2 border-[#E5E7EB] hover:border-[#2D7B6F] text-[#666666] hover:text-[#2D7B6F] flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 active:scale-95"
+          className="w-12 h-12 rounded-full bg-white hover:bg-[#F4F8F7] border-2 border-[#E5E7EB] hover:border-[#1A473F] text-[#666666] hover:text-[#1A473F] flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 active:scale-95"
           aria-label="페이지 맨 위로 이동"
         >
           <ArrowUp className="w-5 h-5" />

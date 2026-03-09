@@ -44,7 +44,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* 좌측: 안내 문구 */}
             <div>
-              <p className="text-[#2D7B6F] font-semibold text-sm uppercase tracking-widest mb-3">
+              <p className="text-[#1A473F] font-semibold text-sm uppercase tracking-widest mb-3">
                 Quick Consultation
               </p>
               <h2 className="text-3xl sm:text-4xl font-black text-[#1A1A1A] mb-4 leading-tight">
@@ -62,7 +62,7 @@ export default function HomePage() {
                   '개인정보 안전하게 보호',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2.5 text-[#444444]">
-                    <span className="w-5 h-5 rounded-full bg-[#2D7B6F] flex items-center justify-center flex-shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-[#1A473F] flex items-center justify-center flex-shrink-0">
                       <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
                         <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>

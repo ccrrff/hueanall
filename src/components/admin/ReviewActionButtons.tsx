@@ -1,6 +1,6 @@
 'use client'
 import { useTransition } from 'react'
-import { CheckCircle, XCircle } from 'lucide-react'
+import { RiCheckboxCircleLine as CheckCircle, RiCloseCircleLine as XCircle } from '@remixicon/react'
 import { approveReview, rejectReview } from '@/app/admin/reviews/actions'
 
 interface Props {

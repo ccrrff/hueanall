@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { Phone, User, Send, CheckCircle2 } from 'lucide-react'
+import { RiPhoneLine as Phone, RiUserLine as User, RiSendPlaneLine as Send, RiCheckboxCircleLine as CheckCircle2 } from '@remixicon/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -72,7 +72,7 @@ export default function QuickConsultForm() {
   if (submitted) {
     return (
       <div className="flex flex-col items-center justify-center py-10 text-center gap-4">
-        <div className="w-16 h-16 bg-[#2D7B6F] rounded-full flex items-center justify-center">
+        <div className="w-16 h-16 bg-[#1A473F] rounded-full flex items-center justify-center">
           <CheckCircle2 className="w-8 h-8 text-white" />
         </div>
         <div>
@@ -86,7 +86,7 @@ export default function QuickConsultForm() {
             setSubmitted(false)
             reset()
           }}
-          className="text-sm text-[#2D7B6F] underline underline-offset-2"
+          className="text-sm text-[#1A473F] underline underline-offset-2"
         >
           다시 신청하기
         </button>
@@ -97,10 +97,10 @@ export default function QuickConsultForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
       {/* 이름 */}
-      <div className="space-y-1.5">
-        <Label htmlFor="quick-name" className="text-sm font-medium text-[#1A1A1A] flex items-center gap-1.5">
-          <User className="w-4 h-4 text-[#2D7B6F]" />
-          성함 <span className="text-red-500">*</span>
+      <div className="space-y-2">
+        <Label htmlFor="quick-name" className="text-sm font-semibold text-[#1A1A1A] flex items-center gap-1.5 ml-1">
+          <User className="w-4 h-4 text-[#1A473F]" />
+          성함 <span className="text-[#1A473F]">*</span>
         </Label>
         <Input
           id="quick-name"
@@ -108,21 +108,21 @@ export default function QuickConsultForm() {
           placeholder="홍길동"
           autoComplete="name"
           className={cn(
-            'h-12 text-base border-[#E5E7EB] focus-visible:ring-[#2D7B6F]',
-            errors.customer_name && 'border-red-400'
+            'h-14 text-base bg-white/50 backdrop-blur-sm border-[#E6EFEF] shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus-visible:ring-[#1A473F] focus-visible:border-[#1A473F] transition-all duration-300 rounded-xl',
+            errors.customer_name && 'border-red-400 focus-visible:ring-red-400'
           )}
           {...register('customer_name')}
         />
         {errors.customer_name && (
-          <p className="text-xs text-red-500">{errors.customer_name.message}</p>
+          <p className="text-xs text-red-500 ml-1">{errors.customer_name.message}</p>
         )}
       </div>
 
       {/* 연락처 */}
-      <div className="space-y-1.5">
-        <Label htmlFor="quick-phone" className="text-sm font-medium text-[#1A1A1A] flex items-center gap-1.5">
-          <Phone className="w-4 h-4 text-[#2D7B6F]" />
-          연락처 <span className="text-red-500">*</span>
+      <div className="space-y-2 mt-5">
+        <Label htmlFor="quick-phone" className="text-sm font-semibold text-[#1A1A1A] flex items-center gap-1.5 ml-1">
+          <Phone className="w-4 h-4 text-[#1A473F]" />
+          연락처 <span className="text-[#1A473F]">*</span>
         </Label>
         <Input
           id="quick-phone"
@@ -130,33 +130,33 @@ export default function QuickConsultForm() {
           placeholder="010-1234-5678"
           autoComplete="tel"
           className={cn(
-            'h-12 text-base border-[#E5E7EB] focus-visible:ring-[#2D7B6F]',
-            errors.customer_phone && 'border-red-400'
+            'h-14 text-base bg-white/50 backdrop-blur-sm border-[#E6EFEF] shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus-visible:ring-[#1A473F] focus-visible:border-[#1A473F] transition-all duration-300 rounded-xl',
+            errors.customer_phone && 'border-red-400 focus-visible:ring-red-400'
           )}
           {...register('customer_phone')}
         />
         {errors.customer_phone && (
-          <p className="text-xs text-red-500">{errors.customer_phone.message}</p>
+          <p className="text-xs text-red-500 ml-1">{errors.customer_phone.message}</p>
         )}
       </div>
 
       {/* 개인정보 동의 */}
-      <div className="space-y-1">
-        <label className="flex items-start gap-2.5 cursor-pointer">
+      <div className="space-y-1 mt-6 bg-[#F4F8F7]/50 rounded-xl p-4 border border-[#E6EFEF]">
+        <label className="flex items-start gap-3 cursor-pointer group">
           <input
             type="checkbox"
-            className="mt-0.5 w-4 h-4 rounded border-[#D1D5DB] accent-[#2D7B6F]"
+            className="mt-0.5 w-4 h-4 rounded border-[#D1D5DB] text-[#1A473F] focus:ring-[#1A473F] transition-colors cursor-pointer"
             {...register('privacy_agreed')}
           />
-          <span className="text-sm text-[#666666] leading-relaxed">
+          <span className="text-[13px] text-[#666666] leading-relaxed group-hover:text-[#444444] transition-colors">
             개인정보 수집 및 이용에 동의합니다.{' '}
-            <a href="/privacy" target="_blank" className="text-[#2D7B6F] underline underline-offset-2">
+            <a href="/privacy" target="_blank" onClick={(e) => e.stopPropagation()} className="text-[#1A473F] font-medium hover:underline underline-offset-4">
               내용 보기
             </a>
           </span>
         </label>
         {errors.privacy_agreed && (
-          <p className="text-xs text-red-500 pl-6">{errors.privacy_agreed.message}</p>
+          <p className="text-xs text-red-500 pl-7">{errors.privacy_agreed.message}</p>
         )}
       </div>
 
@@ -164,24 +164,27 @@ export default function QuickConsultForm() {
       <Button
         type="submit"
         disabled={isSubmitting || !privacyAgreed}
-        className="w-full h-12 bg-[#2D7B6F] hover:bg-[#1E5C52] text-white text-base font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="w-full h-14 mt-8 bg-gradient-to-r from-[#1A473F] to-[#12322C] hover:from-[#12322C] hover:to-[#0A1A17] text-white text-base font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_16px_-6px_rgba(26,71,63,0.3)] hover:shadow-[0_12px_20px_-8px_rgba(26,71,63,0.5)] hover:-translate-y-0.5 transition-all duration-300"
       >
         {isSubmitting ? (
           <span className="flex items-center gap-2">
             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            신청 중...
+            접수 중...
           </span>
         ) : (
-          <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2 tracking-wide">
             <Send className="w-4 h-4" />
-            무료 상담 신청
+            무료 상담 신청하기
           </span>
         )}
       </Button>
 
-      <p className="text-xs text-center text-[#999999]">
-        평균 30분 이내 연락 · 24시간 운영
-      </p>
+      <div className="pt-4 text-center">
+        <p className="inline-flex items-center justify-center space-x-2 text-[13px] text-[#666666] bg-[#F4F8F7] px-4 py-1.5 rounded-full">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#1A473F] animate-pulse"></span>
+          <span>평균 30분 이내 연락 · 24시간 정상 운영</span>
+        </p>
+      </div>
     </form>
   )
 }

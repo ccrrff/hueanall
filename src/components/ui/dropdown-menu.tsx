@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
+import { RiCheckLine as CheckIcon, RiArrowRightSLine as ChevronRightIcon, RiRecordCircleLine as CircleIcon } from '@remixicon/react'
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
