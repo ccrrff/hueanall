@@ -61,7 +61,7 @@ function LoginForm() {
             onChange={e => setAdminId(e.target.value)}
             required
             autoComplete="username"
-            placeholder="admin"
+            placeholder="아이디를 입력해주세요."
             className="h-11"
           />
         </div>
